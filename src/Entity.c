@@ -1,0 +1,127 @@
+//include w/quote means it can be changed at all times
+//include with brackets <> are assumed standard (and not checked at compile time)
+#include <stdlib.h>
+#include "entity.h"
+#include "simple_logger.h"
+#include "gf2d_sprite.h"
+
+//Entity Manager Structure to store and recall entities quickly
+typedef struct {
+	Entity *entityList;
+	Uint32 maxEntities;
+}EntityManager;
+
+//Make EntityManager static (there can only be one, and it sits running as its own instance.
+static EntityManager entityManager = { 0 };
+
+//Destroy Entity Manager
+void entity_manager_close() {
+	//iterate through all entities
+	int i;
+	for (i = 0; i < entityManager.maxEntities; i++) {
+		//Destroy if there
+		entity_free(&entityManager.entityList[i]); //Kill the MEMORY address
+	}
+	if (entityManager.entityList) { //If there is a list of entities, kill it!
+		free(entityManager.entityList);
+	}
+	entityManager.maxEntities = 0;
+	entityManager.entityList = NULL;
+}
+
+//Create Entity Manager (Creates this many blank entities for access.)
+void entity_manager_init(Uint32 maxEntities)
+{
+	//If max entity value is not present
+	if (!maxEntities)
+	{
+		slog("cannot allocate zero entities");
+		return;
+	}
+	//Else, allocate memory based on max entities value (error check it too)
+	entityManager.entityList = (Entity*)malloc(sizeof(Entity)*maxEntities);
+	if (!entityManager.entityList)
+	{
+		slog("failed to allocate %i entities for system", maxEntities);
+	}
+
+	entityManager.maxEntities = maxEntities;
+
+	//Set memory for manipulation
+	memset(entityManager.entityList, 0, sizeof(Entity)*maxEntities);
+	slog("memory allocated");
+
+	//if exitting the game, destroy entity Manager
+	atexit(entity_manager_close);
+}
+
+//Create New Entity
+Entity *entity_new() {
+	int i;
+	for (i = 0; i < entityManager.maxEntities; i++) {
+		//Find empty slot in list to use
+		if (entityManager.entityList[i].inUse) {
+			continue;
+		}
+		//Set in use flag and make entity.
+		entityManager.entityList[i].inUse = 1;
+		slog("Entity is in use");
+		entityManager.entityList[i].scale.x = 0.5; //SCALE/ALPHA CANNOT BE 0, ELSE YOU CANNOT SEE IT.
+		entityManager.entityList[i].scale.y = 0.5; //SCALE/ALPHA CANNOT BE 0, ELSE YOU CANNOT SEE IT.
+		return &entityManager.entityList[i];
+	}
+	//If entity cannot be created
+	slog("all entities in use, cannot provide a new entity"); //Will only trigger if entities are all in use
+	return NULL;
+}
+
+//Destroy Entity
+void entity_free(Entity *self)
+{
+	if (!self)return;
+	if (self->spriteSheet != NULL)
+	{
+		gf2d_sprite_free(self->spriteSheet);
+	}
+	memset(self, 0, sizeof(Entity));
+}
+
+//Draw entity
+void entity_draw(Entity *self)
+{
+	if (!self)return;
+	gf2d_sprite_draw(
+		self->spriteSheet, //Sprite
+		self->position, //Position
+		&self->scale,// self->scale, //address of self -> Scale
+		NULL, //ScaleCenterPoint
+		NULL, //Rotation
+		&self->flip, //Flip
+		NULL,	//ColorShift
+		self->currFrame); //Frame
+}
+
+//Draw all entities
+void entity_draw_all() {
+	int i;
+	for (i = 0; i < entityManager.maxEntities; i++) {
+		entity_draw(&entityManager.entityList[i]);
+	}
+}
+
+void entity_update(Entity *ent) {
+	if ((!ent) || (!ent->inUse))return; //DO not update unless entity is being used or exists.
+	ent->currFrame += 0.35;
+	if (ent->currFrame > ent->frameLimit)ent->currFrame = 0;
+	if (ent->update)ent->update(ent);
+}
+
+void entity_update_all() {
+	int i;
+	for (i = 0; i < entityManager.maxEntities; i++) {
+		entity_update(&entityManager.entityList[i]);
+	}
+}
+
+
+//END OF OMAR'S CODE

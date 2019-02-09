@@ -41,7 +41,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>..\..\</OutDir>
-    <IncludePath>C:\Users\omar0\Desktop\2D Game Dev Project\gf2d win32\gameframework2d\include;C:\Users\omar0\Desktop\2D Game Dev Project\gf2d win32\gameframework2d\win32\include;C:\Users\omar0\Desktop\2D Game Dev Project\SDL\lib\SDL2-2.0.9\include;C:\Users\omar0\Desktop\2D Game Dev Project\SDL\lib\SDL2_image-2.0.4\include;C:\Users\omar0\Desktop\2D Game Dev Project\SDL\lib\SDL2_mixer-2.0.4\include;C:\Users\omar0\Desktop\2D Game Dev Project\SDL\lib\SDL2_ttf-2.0.15\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\omar0\Desktop\2D Game Dev Project\gf2d win32\gameframework2d\include;C:\Users\omar0\Desktop\2D Game Dev Project\Mini Birb Adventures\gameframework2d\include;C:\Users\omar0\Desktop\2D Game Dev Project\gf2d win32\gameframework2d\win32\include;C:\Users\omar0\Desktop\2D Game Dev Project\SDL\lib\SDL2-2.0.9\include;C:\Users\omar0\Desktop\2D Game Dev Project\SDL\lib\SDL2_image-2.0.4\include;C:\Users\omar0\Desktop\2D Game Dev Project\SDL\lib\SDL2_mixer-2.0.4\include;C:\Users\omar0\Desktop\2D Game Dev Project\SDL\lib\SDL2_ttf-2.0.15\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\omar0\Desktop\2D Game Dev Project\SDL\lib\SDL2_ttf-2.0.15\lib\x86;C:\Users\omar0\Desktop\2D Game Dev Project\SDL\lib\SDL2_mixer-2.0.4\lib\x86;C:\Users\omar0\Desktop\2D Game Dev Project\SDL\lib\SDL2_image-2.0.4\lib\x86;C:\Users\omar0\Desktop\2D Game Dev Project\SDL\lib\SDL2-2.0.9\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -83,14 +83,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\Entity.c" />
     <ClCompile Include="..\..\src\game.c" />
     <ClCompile Include="..\..\src\gf2d_draw.c" />
     <ClCompile Include="..\..\src\gf2d_graphics.c" />
     <ClCompile Include="..\..\src\gf2d_sprite.c" />
     <ClCompile Include="..\..\src\gf2d_vector.c" />
     <ClCompile Include="..\..\src\simple_logger.c" />
+    <ClCompile Include="Enemy.c" />
+    <ClCompile Include="Player.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\entity.h" />
     <ClInclude Include="..\..\include\gf2d_draw.h" />
     <ClInclude Include="..\..\include\gf2d_graphics.h" />
     <ClInclude Include="..\..\include\gf2d_sprite.h" />
@@ -98,6 +102,9 @@
     <ClInclude Include="..\..\include\gf2d_types.h" />
     <ClInclude Include="..\..\include\gf2d_vector.h" />
     <ClInclude Include="..\..\include\simple_logger.h" />
+    <ClInclude Include="..\..\include\Tile.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
