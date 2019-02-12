@@ -111,9 +111,14 @@ void entity_draw_all() {
 
 void entity_update(Entity *ent) {
 	if ((!ent) || (!ent->inUse))return; //DO not update unless entity is being used or exists.
-	ent->currFrame += 0.35;
-	if (ent->currFrame > ent->frameLimit)ent->currFrame = 0;
-	if (ent->update)ent->update(ent);
+	ent->currFrame += 0.40;
+	if ((ent->currFrame > ent->endFrame)) { //If animation is finished
+		if (ent->loop == 1)
+			ent->currFrame = ent->startFrame; //Loop animation
+		else if (ent->loop == 0)
+			ent->currFrame = ent->endFrame; //Stall animation
+	}
+	if (ent->update)ent->update(ent); //Run entity's Update function after this
 }
 
 void entity_update_all() {
@@ -121,6 +126,14 @@ void entity_update_all() {
 	for (i = 0; i < entityManager.maxEntities; i++) {
 		entity_update(&entityManager.entityList[i]);
 	}
+}
+
+//Change animation
+void anim_change_by_number(Entity *self, float start, float end, int loop) {
+	self->startFrame = start;
+	self->currFrame = start;
+	self->endFrame = end;
+	self->loop = loop;
 }
 
 

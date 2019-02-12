@@ -16,7 +16,7 @@ int main(int argc, char * argv[])
 	const Uint8 * keys;
 	Sprite *sprite;
 
-	Entity * p; //Player
+	Entity * player; //Player
 
 	int mx, my;
 	float mf = 0; //mf = mouse frame; current mouse animation frame
@@ -48,7 +48,7 @@ int main(int argc, char * argv[])
 	mouse = gf2d_sprite_load_all("images/pointer.png", 32, 32, 16); // mouse pointer var
 
 	//Create entity (player)
-	p = player_new(vector2d(0, 0));
+	player = player_new(vector2d(0, 0));
 
 	/*main game loop */
 	while (!done)	//UPDATE FUNCTION
@@ -94,8 +94,13 @@ int main(int argc, char * argv[])
 		if (keys[SDL_SCANCODE_ESCAPE])done = 1; // exit condition (SDL SCANCODE = Input.GetKey())
 		// exit condition (SDL SCANCODE = Input.GetKey())
 
+
 		if (mf > 2) {
-			slog("Rendering at %f FPS", gf2d_graphics_get_frames_per_second()); //Display framerate
+			slog("currFrame: %f", player->currFrame);
+			slog("endFrame: %f", player->endFrame);
+			slog("loop: %f", player->loop);
+
+			//slog("Rendering at %f FPS", gf2d_graphics_get_frames_per_second()); //Display framerate
 			mf = 0;
 		}
 	}

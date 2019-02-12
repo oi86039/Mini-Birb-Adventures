@@ -85,6 +85,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\Entity.c" />
     <ClCompile Include="..\..\src\game.c" />
+    <ClCompile Include="..\..\src\gf2d_collision.c" />
     <ClCompile Include="..\..\src\gf2d_draw.c" />
     <ClCompile Include="..\..\src\gf2d_graphics.c" />
     <ClCompile Include="..\..\src\gf2d_sprite.c" />
@@ -103,6 +104,7 @@
     <ClInclude Include="..\..\include\gf2d_vector.h" />
     <ClInclude Include="..\..\include\simple_logger.h" />
     <ClInclude Include="..\..\include\Tile.h" />
+    <ClInclude Include="..\..\src\gf2d_collision.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>

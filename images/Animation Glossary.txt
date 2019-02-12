@@ -1,0 +1,12 @@
+Birb (player)
+	Flapping
+		currFrame = 1;
+		frameLimit = 11;
+	Idle
+		currFrame = 12;
+		frameLimit = 59;
+	Falling
+		currFrame = 60;
+		frameLimit = 68;
+	Running
+		currFrame = ;
