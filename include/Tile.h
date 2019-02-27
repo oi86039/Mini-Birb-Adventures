@@ -10,87 +10,79 @@
 #define __TILE_H__
 
 #include "gf2d_sprite.h"
+#include "gf2d_collision.h"
 
-//Tile_S - Entity Structure - ENTITY
+//Tile_S - Tile Structure - TILE
 typedef struct Tile_S
 {
 	int inUse;
 	Vector2D scale;
 	Vector2D position;
-	Vector2D velocity; //for moving platforms
 	Vector2D flip;
 
-	Sprite * spriteSheet; //spriteSheet (pointer, because you're not making a new one)
-	int loop; //State if animation should loop or not.
-	float startFrame; //currentFrame of animation
-	float currFrame; //currentFrame of animation
-	float endFrame; //What frame to stop on in spritesheet
+	Sprite * sprite; //sprite
 
-	//Collider or trigger
-
-	//UNCOMMENT these when (and it) they are being used
-	void(*update)(struct Entity_S* self); //must include pointer to ourselves
-	void(*anim_change_by_name)(struct Entity_S* self, int loop);
-	void(*think)(struct Entity_S* self); //behavior method
-	void(*touch)(struct Entity_S* self, struct Entity_S * other); //Collision with this entity and another entity
+	Shape hitBox;//Collider or trigger
 
 }Tile;
 
-//Create Entity Manager
+//Create Tile Manager
 /**
-*@brief Create an EntityManager that keeps track of all entities and determines how they're used
+*@brief Create an TileManager that keeps track of all entities and determines how they're used
 *@param maxEntities is the max amount of on-screen enemies allowed (given by game.c)
 */
-void entity_manager_init(Uint32 maxEntities);
+void tile_manager_init(Uint32 maxTiles);
 
-//Create Entity (constructor)
+//Create Tile (constructor)
 /**
-*@brief Return a pointer to a new entity
-*@param NULL if there are no entities, or if there is no entity manager; else, gives a blank entity pointer
+*@brief Return a pointer to a new tile
+*@param NULL if there are no entities, or if there is no tile manager; else, gives a blank tile pointer
 */
-Entity *entity_new();
+Tile *tile_new();
 
-//Destroy Entity
+//Create Normal Tile (constructor)
 /**
-*@brief Destroys entity for memory freeing
-*@param Entity to be destroyed (the current instance)
+*@brief Return a pointer to a new normal tile with some default properties
+*@param position - vector to determine where tile is placed
+*@param scale - vector to determine size of tile
 */
-void entity_free(Entity *self);
+Tile *tile_new_normal(Vector2D position, Vector2D scale);
+
+//Create Invisible Normal Tile (constructor)
+/**
+*@brief Return a pointer to a new normal tile with no sprite and some default properties
+*@param position - vector to determine where tile is placed
+*@param scale - vector to determine size of tile
+*/
+Tile *tile_new_invisible(Vector2D position, Vector2D scale);
+
+//Destroy Tile
+/**
+*@brief Destroys tile for memory freeing
+*@param tile to be destroyed (the current instance)
+*/
+void tile_free(Tile *self);
 
 //Draw
 /**
-*@brief Draw or render entity into buffer/screen
-*@param Entity to be drawn (this current instance)
+*@brief Draw or render tile into buffer/screen
+*@param tile to be drawn (this current instance)
 */
-void entity_draw(Entity *self);
+void tile_draw(Tile *self);
 
 //Draw All
 /**
 *@brief Draw all entities into buffer/screen
 */
-void entity_draw_all();
+void tile_draw_all();
 
-//Update
+//Add All to Space
 /**
-*@brief Update position, and vars and frame
-*@param Entity to be updated (this current instance)
+*@brief Add all tiles in tileManager to the space as static shapes
+*@param space - world space to add tiles to.
 */
-void entity_update(Entity *ent);
+void tile_add_all_to_space(Space *space);
 
-//Update All
-/**
-*@brief Update all entities
-*/
-void entity_update_all();
-
-/**
-*@brief Change animation of entity and determine whether to loop or not.
-*@param Pointer to entity changing animations
-*@param Frame to start new animation from
-*@param Frame to end new animation on
-*@param Flag to determine if animation should loop or not
-*/
-void anim_change_by_number(Entity *self, float start, float end, int loop);
 #endif
 
 //eof

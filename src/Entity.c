@@ -1,5 +1,3 @@
-//include w/quote means it can be changed at all times
-//include with brackets <> are assumed standard (and not checked at compile time)
 #include <stdlib.h>
 #include "entity.h"
 #include "simple_logger.h"
@@ -99,6 +97,8 @@ void entity_draw(Entity *self)
 		&self->flip, //Flip
 		NULL,	//ColorShift
 		self->currFrame); //Frame
+	if (&self->hitBox)
+		gf2d_shape_draw(self->hitBox, gf2d_color(0, 255, 0, 255)); //DEBUGGING PURPOSES
 }
 
 //Draw all entities

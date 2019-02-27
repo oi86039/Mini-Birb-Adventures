@@ -12,6 +12,7 @@
 #define __ENTITY_H__
 
 #include "gf2d_sprite.h"
+#include "gf2d_collision.h"
 
 typedef enum Anim { //Names of all animations
 	NONE,
@@ -23,6 +24,7 @@ typedef struct Entity_S
 {
 	int inUse;
 	int lastDir; //Determines if facing left of right (0 = right, 1 = left)
+	int onGround; //Can only be triggered with colliders and names
 	Vector2D scale;
 	Vector2D position;
 	Vector2D velocity;
@@ -35,14 +37,15 @@ typedef struct Entity_S
 	float currFrame; //currentFrame of animation
 	float endFrame; //What frame to stop on in spritesheet
 
-	Vector2D collider;//Collider or trigger
+	Shape hitBox; //Collider or trigger
+	Body body; //Physics body
 
 	//UNCOMMENT these when (and it) they are being used
 	void(*update)(struct Entity_S* self); //must include pointer to ourselves
 	void(*anim_change_by_name)(struct Entity_S* self, Anim newAnim, int loop);
-	void(*think)(struct Entity_S* self); //behavior method
-	void(*touch)(struct Entity_S* self, struct Entity_S * other); //Collision with this entity and another entity
-
+	//void(*think)(struct Entity_S* self); //behavior method
+	int(*bodyTouch)(struct Body_S *self, struct Body_S *other, Collision *collision);
+	int(*worldTouch)(struct Body_S *self, Collision *collision);
 }Entity;
 
 //Create Entity Manager
@@ -99,6 +102,7 @@ void entity_update_all();
 *@param Frame to end new animation on
 *@param Flag to determine if animation should loop or not
 */
+
 void anim_change_by_number(Entity *self, float start, float end, int loop);
 #endif
 
