@@ -22,30 +22,28 @@ typedef enum Anim { //Names of all animations
 //Entity_S - Entity Structure - ENTITY
 typedef struct Entity_S
 {
-	int inUse;
-	int lastDir; //Determines if facing left of right (0 = right, 1 = left)
-	int onGround; //Can only be triggered with colliders and names
-	Vector2D scale;
-	Vector2D position;
-	Vector2D velocity;
-	Vector2D flip;
+	int inUse;	/**flag that states if entity is being used*/
+	int lastDir; /**Determines if facing left of right (0 = right, 1 = left)*/
+	int onGround; /**Determines if entity is on the ground or airborne*/
+	Vector2D scale; /**how big the entity is (1 for normal size)*/
+	Vector2D position; /**position of entity in scene*/
+	Vector2D velocity; /**how fast (and what direction) the entity is traveling in*/
+	Vector2D flip; /**Determines if flipping sprite horizontally/vertically*/
 
-	Sprite * spriteSheet; //spriteSheet (pointer, because you're not making a new one)
-	Anim currAnim; //Name of Animation playing
-	int loop; //State if animation should loop or not.
-	float startFrame; //currentFrame of animation
-	float currFrame; //currentFrame of animation
-	float endFrame; //What frame to stop on in spritesheet
+	Sprite * spriteSheet; /**sprites of entity containing all animation frames)*/
+	Anim currAnim; /**Name of Animation playing*/
+	int loop; /**State if animation should loop or not*/
+	float startFrame; /**currentFrame of animation*/
+	float currFrame; /**currentFrame of animation*/
+	float endFrame; /**What frame to stop on in spritesheet*/
 
-	Shape hitBox; //Collider or trigger
-	Body body; //Physics body
+	Shape hitBox; /**Collider or trigger*/
+	Body body; /**Physics body*/
 
-	//UNCOMMENT these when (and it) they are being used
-	void(*update)(struct Entity_S* self); //must include pointer to ourselves
-	void(*anim_change_by_name)(struct Entity_S* self, Anim newAnim, int loop);
-	//void(*think)(struct Entity_S* self); //behavior method
-	int(*bodyTouch)(struct Body_S *self, struct Body_S *other, Collision *collision);
-	int(*worldTouch)(struct Body_S *self, Collision *collision);
+	void(*update)(struct Entity_S* self); /**update function runs every frame for entity*/
+	void(*anim_change_by_name)(struct Entity_S* self, Anim newAnim, int loop); /**changes animation state by enum*/
+	int(*bodyTouch)(struct Body_S *self, struct Body_S *other, Collision *collision); /**runs when touching another body/entity*/
+	int(*worldTouch)(struct Body_S *self, Collision *collision); /**run when touching the world space*/
 }Entity;
 
 //Create Entity Manager

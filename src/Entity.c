@@ -5,8 +5,8 @@
 
 //Entity Manager Structure to store and recall entities quickly
 typedef struct {
-	Entity *entityList;
-	Uint32 maxEntities;
+	Entity *entityList; /**ArrayList of all entities in scene*/
+	Uint32 maxEntities; /**Max limit of entities allowed in scene*/
 }EntityManager;
 
 //Make EntityManager static (there can only be one, and it sits running as its own instance.

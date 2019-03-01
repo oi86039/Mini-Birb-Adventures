@@ -15,14 +15,14 @@
 //Tile_S - Tile Structure - TILE
 typedef struct Tile_S
 {
-	int inUse;
-	Vector2D scale;
-	Vector2D position;
-	Vector2D flip;
+	int inUse; /**flag that states if tile is being used*/
+	Vector2D scale; /**how big the tile is (1 for normal size)*/
+	Vector2D position; /**position of tile in scene*/
+	Vector2D flip; /**Determines if flipping sprite horizontally/vertically*/
 
-	Sprite * sprite; //sprite
+	Sprite * sprite; /**picture to draw of tile*/
 
-	Shape hitBox;//Collider or trigger
+	Shape hitBox; /**Collider or trigger*/
 
 }Tile;
 
