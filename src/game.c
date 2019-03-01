@@ -245,9 +245,12 @@ int level2() {
 	player = player_new(vector2d(70, 515));
 
 	//create tilemap (Put in separate files)
-	tile = tile_new_invisible(vector2d(55, 550), vector2d(0.08, 0.03)); //Bottom start
-	tile = tile_new_invisible(vector2d(80, 310), vector2d(0.08, 0.03)); //Waiter right arm
-
+	tile = tile_new_invisible(vector2d(45, 570), vector2d(0.08, 0.03)); //Bottom start
+	tile = tile_new_invisible(vector2d(115, 415), vector2d(0.05, 0.08)); //Waiter stage-left arm
+	tile = tile_new_invisible(vector2d(214, 290), vector2d(0.07, 0.07)); //Waiter head
+	tile = tile_new_invisible(vector2d(166.2, 360), vector2d(0.157, 0.3)); //Waiter body
+	tile = tile_new_invisible(vector2d(325, 360), vector2d(0.05, 0.13)); //Waiter stage-right arm
+	tile = tile_new_invisible(vector2d(0, 180), vector2d(0.2, 0.08)); //Cabinet above waiter
 	//Create space
 	space = gf2d_space_new_full(
 		10,
