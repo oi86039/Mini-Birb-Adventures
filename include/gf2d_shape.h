@@ -31,6 +31,7 @@ typedef enum
 typedef struct
 {
 	ShapeTypes type;
+	int id; //Specifys what type of shape was hit.
 	union
 	{
 		Circle c;

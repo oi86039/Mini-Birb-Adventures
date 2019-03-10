@@ -83,6 +83,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\Door.c" />
     <ClCompile Include="..\..\src\Entity.c" />
     <ClCompile Include="..\..\src\game.c" />
     <ClCompile Include="..\..\src\gf2d_collision.c" />
@@ -93,12 +94,14 @@
     <ClCompile Include="..\..\src\gf2d_shape.c" />
     <ClCompile Include="..\..\src\gf2d_sprite.c" />
     <ClCompile Include="..\..\src\gf2d_vector.c" />
+    <ClCompile Include="..\..\src\Save.c" />
     <ClCompile Include="..\..\src\simple_logger.c" />
     <ClCompile Include="..\..\src\Tile.c" />
     <ClCompile Include="Enemy.c" />
     <ClCompile Include="Player.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\Door.h" />
     <ClInclude Include="..\..\include\entity.h" />
     <ClInclude Include="..\..\include\gf2d_collision.h" />
     <ClInclude Include="..\..\include\gf2d_color.h" />
@@ -110,6 +113,7 @@
     <ClInclude Include="..\..\include\gf2d_text.h" />
     <ClInclude Include="..\..\include\gf2d_types.h" />
     <ClInclude Include="..\..\include\gf2d_vector.h" />
+    <ClInclude Include="..\..\include\Save.h" />
     <ClInclude Include="..\..\include\simple_logger.h" />
     <ClInclude Include="..\..\include\Tile.h" />
     <ClInclude Include="Enemy.h" />

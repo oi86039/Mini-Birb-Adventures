@@ -56,6 +56,22 @@ Tile *tile_new_normal(Vector2D position, Vector2D scale);
 */
 Tile *tile_new_invisible(Vector2D position, Vector2D scale);
 
+//Create Spikes
+/**
+*@brief Return a pointer to a spike tile that hurts the player on contact
+*@param position - vector to determine where tile is placed
+*@param scale - vector to determine size of tile
+*/
+Tile *tile_new_spike(Vector2D position, Vector2D scale);
+
+//Create Exit Door
+/**
+*@brief Return a pointer to an Exit Door tile that changes levels when touched
+*@param position - vector to determine where tile is placed
+*@param scale - vector to determine size of tile
+*/
+Tile *tile_new_Door(Vector2D position, Vector2D scale);
+
 //Destroy Tile
 /**
 *@brief Destroys tile for memory freeing
@@ -82,6 +98,14 @@ void tile_draw_all();
 *@param space - world space to add tiles to.
 */
 void tile_add_all_to_space(Space *space);
+
+//Load Tilemap
+/**
+*@brief Load in level one or level 2
+*@param level - which level to load
+*@param tile - pointer to tile to load to
+*/
+void load_tilemap(int level, Tile *tile);
 
 #endif
 

@@ -29,6 +29,8 @@ typedef struct Entity_S
 	Vector2D position; /**position of entity in scene*/
 	Vector2D velocity; /**how fast (and what direction) the entity is traveling in*/
 	Vector2D flip; /**Determines if flipping sprite horizontally/vertically*/
+	
+	float health; /**Health of entity (if it is destructible)*/
 
 	Sprite * spriteSheet; /**sprites of entity containing all animation frames)*/
 	Anim currAnim; /**Name of Animation playing*/
