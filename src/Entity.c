@@ -95,7 +95,7 @@ void entity_draw(Entity *self)
 		NULL, //ScaleCenterPoint
 		NULL, //Rotation
 		&self->flip, //Flip
-		NULL,	//ColorShift
+		&self->colorShift,	//ColorShift
 		self->currFrame); //Frame
 	if (&self->hitBox)
 		gf2d_shape_draw(self->hitBox, gf2d_color(0, 255, 0, 255)); //DEBUGGING PURPOSES

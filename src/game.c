@@ -61,8 +61,11 @@ int level1() {
 	sprite = gf2d_sprite_load_image("images/backgrounds/bg_flat.png"); // background var
 	mouse = gf2d_sprite_load_all("images/pointer.png", 32, 32, 16, false); // mouse pointer var
 
+	//Init save file
+	read_file(&save, 1);
+
 	//Create entity (player)
-	player = player_new(vector2d(0, 420));
+	player = player_new(vector2d(0, 420), 1, save);
 
 	//create tilemap (Put in separate files)
 	load_tilemap(1, tile);
@@ -115,7 +118,17 @@ int level1() {
 
 		//Effects
 
+		//Saving
+		if (keys[SDL_SCANCODE_O]) {
+			save_file(&save, 1, player);
+		}
+		if (keys[SDL_SCANCODE_P]) {
+			load_file(&save, 1, player);
+		}
+
 		//UI elements last (Mouse counts as UI)
+		gf2d_sprite_draw_image(gf2d_sprite_load_image("images/Health Text.png"), vector2d(0, 630));
+
 		gf2d_sprite_draw(
 			mouse,
 			vector2d(mx, my),
@@ -156,6 +169,7 @@ int level2() {
 	Sprite *mouse;
 	Vector4D mouseColor = { 255,100,255,200 };
 
+
 	/*program initializtion*/
 	init_logger("gf2d.log");
 	slog("---==== BEGIN ====---");
@@ -181,8 +195,11 @@ int level2() {
 	sprite = gf2d_sprite_load_image("images/backgrounds/bg_flat.png"); // background var
 	mouse = gf2d_sprite_load_all("images/pointer.png", 32, 32, 16, false); // mouse pointer var
 
+	//Init save file
+	read_file(&save, 2);
+
 	//Create entity (player)
-	player = player_new(vector2d(70, 515));
+	player = player_new(vector2d(70, 515), 2, save);
 
 	//create tilemap (Put in separate files)
 	load_tilemap(2, tile);
@@ -224,10 +241,10 @@ int level2() {
 
 		//Saving
 		if (keys[SDL_SCANCODE_O]) {
-			save_file(&save, 1, player);
+			save_file(&save, 2, player);
 		}
 		if (keys[SDL_SCANCODE_P]) {
-			load_file(&save);
+			load_file(&save, 2, player);
 		}
 
 		//Tiles
@@ -243,7 +260,7 @@ int level2() {
 		//Effects
 
 		//UI elements last (Mouse counts as UI)
-		gf2d_sprite_draw_image(gf2d_sprite_load_image("images/Health Text.png"),vector2d(0,630));
+		gf2d_sprite_draw_image(gf2d_sprite_load_image("images/Health Text.png"), vector2d(0, 630));
 
 		gf2d_sprite_draw(
 			mouse,

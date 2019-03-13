@@ -19,6 +19,10 @@ typedef enum Anim { //Names of all animations
 	BIRB_IDLE, BIRB_JUMP, BIRB_FLAP, BIRB_WALK, BIRB_DASH, BIRB_FALL, BIRB_ATTACK, BIRB_SPECIAL_ATTACK, BIRB_HURT,
 }Anim;
 
+typedef enum State { //Ability/firing state of player/ enemies
+	BIRB_NORMAL, BIRB_FIRE, BIRB_ICE, BIRB_FAST
+}State;
+
 //Entity_S - Entity Structure - ENTITY
 typedef struct Entity_S
 {
@@ -29,7 +33,10 @@ typedef struct Entity_S
 	Vector2D position; /**position of entity in scene*/
 	Vector2D velocity; /**how fast (and what direction) the entity is traveling in*/
 	Vector2D flip; /**Determines if flipping sprite horizontally/vertically*/
-	
+
+	State state; /**Ability/firing state of player/enemies*/
+	Vector4D colorShift; /**Change color of entity if specified*/
+
 	float health; /**Health of entity (if it is destructible)*/
 
 	Sprite * spriteSheet; /**sprites of entity containing all animation frames)*/

@@ -60,7 +60,7 @@
     <ClCompile Include="..\..\src\Save.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Door.c">
+    <ClCompile Include="..\..\src\Projectile.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -113,7 +113,7 @@
     <ClInclude Include="..\..\include\Save.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\Door.h">
+    <ClInclude Include="..\..\include\Projectile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
