@@ -1,5 +1,6 @@
 #include "Projectile.h"
 #include "simple_logger.h"
+#include "gui.h"
 
 void projectile_update(Entity *self, Space *space);
 
@@ -32,7 +33,7 @@ Entity *projectile_new(Proj_Type type, Vector2D velocity, Entity *shooter, Space
 		projectile->velocity = velocity;
 		projectile->hitBox = gf2d_shape_circle(projectile->position.x, projectile->position.y, 500 * projectile->scale.x);
 		projectile->offset = vector2d(10, 10);
-		projectile->timeLimit = 0.05;
+		projectile->timeLimit = 0.15;
 		melee_count++;
 	}
 	else if (type == LONG && long_count < 3) {
@@ -52,7 +53,7 @@ Entity *projectile_new(Proj_Type type, Vector2D velocity, Entity *shooter, Space
 		projectile->velocity = velocity;
 		projectile->hitBox = gf2d_shape_circle(projectile->position.x, projectile->position.y, 238 * projectile->scale.x);
 		projectile->offset = vector2d(5, 5);
-		projectile->timeLimit = 0.15;
+		projectile->timeLimit = 0.50;
 		spread_count++;
 	}
 	else if (type == RAPID && rapid_count < 10) {
@@ -107,6 +108,7 @@ Entity *projectile_new(Proj_Type type, Vector2D velocity, Entity *shooter, Space
 void projectile_update(Entity *self, Space *space) {
 
 	self->timer += 0.01; //Increment timer
+	gui_set_energy(self->timer/self->timeLimit);
 
 	Collision staticHit = gf2d_space_shape_test(space, self->hitBox);
 	Collision bodyHit;
@@ -119,43 +121,25 @@ void projectile_update(Entity *self, Space *space) {
 	self->hitBox.s.c.y = self->position.y + self->offset.y;
 
 	//if (staticHit.collided >= 1) { //If projectile touches something, destroy the projectile
-	if (self->type == MELEE) {
-		if (self->timer >= self->timeLimit) {
+	if (self->timer >= self->timeLimit) {
+		if (self->type == MELEE) {
 			melee_count--;
-			projectile_count--;
-			gf2d_space_remove_body(space, &self->body);
-			entity_free(self);
-			slog("removed melee");
+				projectile_free(space, self);
 		}
-	}
-	else if (self->type == LONG) {
-		if (self->timer >= self->timeLimit) {
+		else if (self->type == LONG) {
 			long_count--;
-			projectile_count--;
-			gf2d_space_remove_body(space, &self->body);
-			entity_free(self);
-			slog("removed long");
+				projectile_free(space, self);
 		}
-	}
-	else if (self->type == SPREAD) {
-		if (self->timer >= self->timeLimit) {
+		else if (self->type == SPREAD) {
 			spread_count--;
-			projectile_count--;
-			gf2d_space_remove_body(space, &self->body);
-			entity_free(self);
-			slog("removed spread");
-		}
-	}
-	else if (self->type == RAPID) {
-		if (self->timer >= self->timeLimit) {
-			rapid_count--;
-			projectile_count--;
-			gf2d_space_remove_body(space, &self->body);
-			entity_free(self);
-			slog("removed rapid");
-		}
-	}
+				projectile_free(space, self);
 
+		}
+		else if (self->type == RAPID) {
+			rapid_count--;
+			projectile_free(space, self);
+		}
+	}
 }
 
 int projectile_bodyTouch(struct Body_S *self, struct Body_S *other, Collision *collision) {
@@ -171,6 +155,12 @@ int projectile_worldTouch(struct Body_S *self, Collision *collision) {
 		return 1;
 	}
 	else return 0;
+}
+void projectile_free(Space *space, Entity*self) {
+	projectile_count--;
+	gf2d_space_remove_body(space, &self->body);
+	gui_set_energy(1);
+	entity_free(self);
 }
 
 

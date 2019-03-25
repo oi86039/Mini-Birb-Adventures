@@ -81,7 +81,7 @@ Tile *tile_new_invisible(Vector2D position, Vector2D scale) {
 		tile->scale = scale;
 		tile->position = position;
 		tile->hitBox = gf2d_shape_rect(position.x, position.y, 1024 * scale.x, 1024 * scale.y);
-		tile->hitBox.id = 0;
+		tile->hitBox.id = 1;
 		return tile;
 	}
 	else
@@ -96,7 +96,7 @@ Tile *tile_new_normal(Vector2D position, Vector2D scale) {
 		tile->scale = scale;
 		tile->position = position;
 		tile->hitBox = gf2d_shape_rect(position.x, position.y, 1024 * scale.x, 1024 * scale.y); //Sprite of jpg size
-		tile->hitBox.id = 1;
+		tile->hitBox.id = 2;
 		return tile;
 	}
 	else
@@ -110,12 +110,28 @@ Tile *tile_new_spike(Vector2D position, Vector2D scale) {
 		tile->scale = scale;
 		tile->position = position;
 		tile->hitBox = gf2d_shape_rect(position.x, position.y, 20 * scale.x, 5 * scale.y); //Sprite of jpg size
-		tile->hitBox.id = 2;
+		tile->hitBox.id = 3;
 		return tile;
 	}
 	else
 		return NULL;
 }
+//Create a Heat Area Tile
+Tile *tile_new_heatArea(Vector2D position, Vector2D scale) {
+	Tile *tile = tile_new();
+	if (tile) {
+		tile->sprite = gf2d_sprite_load_image("images/Spikes.png"); //Load spike tile sprite
+		tile->scale = scale;
+		tile->position = position;
+		tile->hitBox = gf2d_shape_rect(position.x, position.y, 20 * scale.x, 5 * scale.y); //Sprite of jpg size
+		tile->hitBox.id = 4;
+		return tile;
+	}
+	else
+		return NULL;
+}
+
+
 //Create Exit Door
 Tile *tile_new_Door(Vector2D position, Vector2D scale) {
 	Tile *tile = tile_new();

@@ -60,6 +60,7 @@ int level1() {
 	
 	gui_setup_hud();
 	gui_set_health(30);
+	gui_set_energy(1);
 	//gf2d_text_init("config/fonts.cfg");
 
 	SDL_ShowCursor(SDL_DISABLE);

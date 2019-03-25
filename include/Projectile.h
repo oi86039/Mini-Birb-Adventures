@@ -15,6 +15,13 @@
 Entity *projectile_new(Proj_Type type, Vector2D velocity, Entity *shooter, Space *space);
 
 /**
+* @brief - remove projectile from space and memory
+* @param - space - physics space proj is in
+* @param - self - pointer to projectile
+*/
+void projectile_free(Space *space, Entity*self);
+
+/**
 *@brief Update position and collision of projectile
 *@param self - pointer to projectile entity
 *@param space - the physics space the projectile should be placed in
