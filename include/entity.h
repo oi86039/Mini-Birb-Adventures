@@ -14,6 +14,8 @@
 #include "gf2d_sprite.h"
 #include "gf2d_collision.h"
 
+typedef enum Proj_Type { MELEE, LONG, SPREAD, RAPID }Proj_Type;
+
 typedef enum Anim { //Names of all animations
 	NONE,
 	BIRB_IDLE, BIRB_JUMP, BIRB_FLAP, BIRB_WALK, BIRB_DASH, BIRB_FALL, BIRB_ATTACK, BIRB_SPECIAL_ATTACK, BIRB_HURT,
@@ -22,6 +24,7 @@ typedef enum Anim { //Names of all animations
 typedef enum State { //Ability/firing state of player/ enemies
 	BIRB_NORMAL, BIRB_FIRE, BIRB_ICE, BIRB_FAST
 }State;
+
 
 //Entity_S - Entity Structure - ENTITY
 typedef struct Entity_S
@@ -48,11 +51,18 @@ typedef struct Entity_S
 
 	Shape hitBox; /**Collider or trigger*/
 	Body body; /**Physics body*/
+	Vector2D offset; /**Hitbox offset*/
+
+	Proj_Type type; /**Type of projectile to fire*/
+
+	float timer; /**Keeps track of time for updates and duration functions*/
+	float timeLimit; /**Limit/duration of entity before destruction*/
 
 	void(*update)(struct Entity_S* self); /**update function runs every frame for entity*/
+	void(*projectile_update)(struct Entity_S* self, Space *space); /**update function for just projectiles*/
 	void(*anim_change_by_name)(struct Entity_S* self, Anim newAnim, int loop); /**changes animation state by enum*/
-	int(*bodyTouch)(struct Body_S *self, struct Body_S *other, Collision *collision); /**runs when touching another body/entity*/
-	int(*worldTouch)(struct Body_S *self, Collision *collision); /**run when touching the world space*/
+	//int(*bodyTouch)(struct Body_S *self, struct Body_S *other, Collision *collision); /**runs when touching another body/entity*/
+	//int(*worldTouch)(struct Body_S *self, Collision *collision); /**run when touching the world space*/
 }Entity;
 
 //Create Entity Manager
@@ -93,14 +103,16 @@ void entity_draw_all();
 /**
 *@brief Update position, and vars and frame
 *@param Entity to be updated (this current instance)
+*@param space - physics space of entity
 */
-void entity_update(Entity *ent);
+void entity_update(Entity *ent, Space*space);
 
 //Update All
 /**
 *@brief Update all entities
+*@param space - physics space of entity
 */
-void entity_update_all();
+void entity_update_all(Space *space);
 
 /**
 *@brief Change animation of entity and determine whether to loop or not.

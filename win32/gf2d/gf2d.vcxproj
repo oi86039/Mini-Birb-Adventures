@@ -83,6 +83,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\include\gui.c" />
     <ClCompile Include="..\..\src\Entity.c" />
     <ClCompile Include="..\..\src\game.c" />
     <ClCompile Include="..\..\src\gf2d_collision.c" />
@@ -113,6 +114,7 @@
     <ClInclude Include="..\..\include\gf2d_text.h" />
     <ClInclude Include="..\..\include\gf2d_types.h" />
     <ClInclude Include="..\..\include\gf2d_vector.h" />
+    <ClInclude Include="..\..\include\gui.h" />
     <ClInclude Include="..\..\include\Projectile.h" />
     <ClInclude Include="..\..\include\Save.h" />
     <ClInclude Include="..\..\include\simple_logger.h" />

@@ -25,7 +25,7 @@ void save_file(Save *self, int level, Entity*player);
 *@param - self - pointer to save struct to load from file
 *@param - level - current level of the game running (NOT THE SAVE'S LEVEL)
 */
-Save read_file(Save *self, int level);
+void read_file(Save *self, int level);
 
 /**
 *@brief - Load game state from bin file and change game based on file
@@ -33,6 +33,6 @@ Save read_file(Save *self, int level);
 *@param - level - current level of the game running (NOT THE SAVE'S LEVEL)
 *@param - player - pointer to player in game world to manipulate from save
 */
-Save load_file(Save *self, int level, Entity*player);
+void load_file(Save *self, int level, Entity*player);
 
 #endif

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "Save.h"
 #include "simple_logger.h"
+#include "Player.h"
 
 //Save to save struct and write to file (game -> save -> file)
 void save_file(Save *self, int level, Entity*player) {
@@ -21,7 +22,7 @@ void save_file(Save *self, int level, Entity*player) {
 	slog("%f", self->player_position.y);
 }
 //Read save struct from file (file -> save -> game)
-Save read_file(Save *self, int level) {
+void read_file(Save *self, int level) {
 	//Load from file
 	FILE *saveFile = fopen("save/saveFile.birbSav", "rb");
 	fread(&(*self), sizeof(struct Save_S), 1, saveFile); //Read to contents of save file once into the address of out save struct.
@@ -32,7 +33,7 @@ Save read_file(Save *self, int level) {
 	//Use file afterwards
 }
 //Read save struct from file (file -> save -> game) and change game
-Save load_file(Save *self, int level, Entity*player) {
+void load_file(Save *self, int level, Entity*player) {
 	//Load from file
 	FILE *saveFile = fopen("save/saveFile.birbSav", "rb");
 	fread(&(*self), sizeof(struct Save_S), 1, saveFile); //Read to contents of save file once into the address of out save struct.
@@ -46,6 +47,7 @@ Save load_file(Save *self, int level, Entity*player) {
 	
 	player->position = self->player_position;
 	player->health = self->player_health;
+	player_health_change(player, 0);
 	player->state = self->player_state;
 
 	slog("%i", self->level);
@@ -53,6 +55,5 @@ Save load_file(Save *self, int level, Entity*player) {
 	//slog("%s", self->player_state);
 	slog("%f", self->player_position.x);
 	slog("%f", self->player_position.y);
-
 	//Use file afterwards
 }

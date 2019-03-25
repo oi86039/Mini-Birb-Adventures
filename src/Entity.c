@@ -47,7 +47,7 @@ void entity_manager_init(Uint32 maxEntities)
 
 	//Set memory for manipulation
 	memset(entityManager.entityList, 0, sizeof(Entity)*maxEntities);
-	slog("memory allocated");
+	//slog("memory allocated");
 
 	//if exitting the game, destroy entity Manager
 	atexit(entity_manager_close);
@@ -63,7 +63,7 @@ Entity *entity_new() {
 		}
 		//Set in use flag and make entity.
 		entityManager.entityList[i].inUse = 1;
-		slog("Entity is in use");
+		//slog("Entity is in use");
 		entityManager.entityList[i].scale.x = 0.5; //SCALE/ALPHA CANNOT BE 0, ELSE YOU CANNOT SEE IT.
 		entityManager.entityList[i].scale.y = 0.5; //SCALE/ALPHA CANNOT BE 0, ELSE YOU CANNOT SEE IT.
 		return &entityManager.entityList[i];
@@ -82,6 +82,7 @@ void entity_free(Entity *self)
 		gf2d_sprite_free(self->spriteSheet);
 	}
 	memset(self, 0, sizeof(Entity));
+	//slog("entity freed");
 }
 
 //Draw entity
@@ -109,7 +110,7 @@ void entity_draw_all() {
 	}
 }
 
-void entity_update(Entity *ent) {
+void entity_update(Entity *ent, Space*space) {
 	if ((!ent) || (!ent->inUse))return; //DO not update unless entity is being used or exists.
 	ent->currFrame += 0.40;
 	if ((ent->currFrame > ent->endFrame)) { //If animation is finished
@@ -119,12 +120,13 @@ void entity_update(Entity *ent) {
 			ent->currFrame = ent->endFrame; //Stall animation
 	}
 	if (ent->update)ent->update(ent); //Run entity's Update function after this
+	if (ent->projectile_update)ent->projectile_update(ent, space);
 }
 
-void entity_update_all() {
+void entity_update_all(Space *space) {
 	int i;
 	for (i = 0; i < entityManager.maxEntities; i++) {
-		entity_update(&entityManager.entityList[i]);
+		entity_update(&entityManager.entityList[i],space);
 	}
 }
 
