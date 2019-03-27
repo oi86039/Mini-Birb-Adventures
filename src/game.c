@@ -33,7 +33,9 @@ int level1() {
 
 	Save save;
 	Entity * player; //Player
-	Entity * enemy; //Enemy
+	Entity * enemy1; //Enemy
+	Entity * enemy2; //Enemy
+	Entity * enemy3; //Enemy
 	Tile * tile = tile_new_invisible(vector2d(0, 0), vector2d(0, 0)); //Test tile
 
 	Space *space;
@@ -92,7 +94,10 @@ int level1() {
 	player = player_new(vector2d(0, 420), 1, save);
 
 	//create tilemap (Put in separate files)
-	load_tilemap(1, tile, enemy);
+	load_tilemap(1, tile);
+	enemy1 = enemy_new(11, vector2d(1000, 330), space);
+	enemy2 = enemy_new(12, vector2d(271, 640), space);
+	enemy3 = enemy_new(13, vector2d(980, 330), space);
 
 	//Add to space
 	gf2d_space_add_body(space, &player->body);
@@ -132,13 +137,13 @@ int level1() {
 
 		//Saving
 		if (keys[SDL_SCANCODE_O] && player->health > 0) {
-			save_file(&save, 1, player);
+			save_file(&save, 1, player, enemy1, enemy2, enemy3);
 			saveMessage = gf2d_sprite_load_image("images/ui/Saved.png");
 			saveUITimer = 0;
 			saveUIFlag = 1;
 		}
 		if (keys[SDL_SCANCODE_P]) {
-			load_file(&save, 1, player);
+			load_file(&save, 1, player, enemy1, enemy2, enemy3);
 			saveMessage = gf2d_sprite_load_image("images/ui/Loaded.png");
 			saveUITimer = 0;
 			saveUIFlag = 1;
@@ -196,7 +201,9 @@ int level2() {
 
 	Save save;
 	Entity * player; //Player
-	Entity * enemy; //Player
+	Entity * enemy1; //Player
+	Entity * enemy2; //Player
+	Entity * enemy3; //Player
 	Tile * tile = tile_new_invisible(vector2d(0, 0), vector2d(0, 0)); //Test tile
 
 	Space *space;
@@ -257,7 +264,10 @@ int level2() {
 	gui_set_health(player->health);
 
 	//create tilemap (Put in separate files)
-	load_tilemap(2, tile, enemy);
+	load_tilemap(2, tile);
+	enemy1 = enemy_new(11, vector2d(1000, 330), space);
+	enemy2 = enemy_new(12, vector2d(271, 640), space);
+	enemy3 = enemy_new(13, vector2d(980, 330), space);
 
 	//Add to space
 	gf2d_space_add_body(space, &player->body);
@@ -290,20 +300,20 @@ int level2() {
 		//Entities
 		entity_draw_all();
 		if (player)
-			player_update(player, space, 2, 2);
+			player_update(player, space, &save, enemy1, enemy2, enemy3);
 		entity_update_all(space, player);
 
 		//Effects
 
 		//Saving
 		if (keys[SDL_SCANCODE_O] && player->health > 0) {
-			save_file(&save, 2, player);
+			save_file(&save, 2, player, enemy1, enemy2, enemy3);
 			saveMessage = gf2d_sprite_load_image("images/ui/Saved.png");
 			saveUITimer = 0;
 			saveUIFlag = 1;
 		}
 		if (keys[SDL_SCANCODE_P]) {
-			load_file(&save, 2, player);
+			load_file(&save, 2, player, enemy1, enemy2, enemy3);
 			saveMessage = gf2d_sprite_load_image("images/ui/Loaded.png");
 			saveUITimer = 0;
 			saveUIFlag = 1;

@@ -5,7 +5,7 @@
 #include "gui.h"
 
 //Save to save struct and write to file (game -> save -> file)
-void save_file(Save *self, int level, Entity*player) {
+void save_file(Save *self, int level, Entity*player, Entity*enemy1, Entity*enemy2, Entity*enemy3) {
 	//Set struct parameters
 	self->level = level;
 	self->player_position = player->position;
@@ -15,6 +15,11 @@ void save_file(Save *self, int level, Entity*player) {
 	self->player_onGround = player->onGround;
 	self->player_velocity = player->velocity;
 	self->player_health = player->health;
+
+	self->enemy1 = *enemy1;
+	self->enemy2 = *enemy2;
+	self->enemy3 = *enemy3;
+
 	//Save to file
 	FILE *saveFile = fopen("save/saveFile.birbSav", "wb");
 	fwrite(&(*self), sizeof(struct Save_S), 1, saveFile); //Check how this works...
@@ -29,14 +34,14 @@ void save_file(Save *self, int level, Entity*player) {
 void read_file(Save *self, int level) {
 	//Load from file
 	FILE *saveFile = fopen("save/saveFile.birbSav", "rb");
-	fread(&(*self), sizeof(struct Save_S), 1, saveFile); 
+	fread(&(*self), sizeof(struct Save_S), 1, saveFile);
 	fclose(saveFile);
 
 	slog("%i", self->level);
 	//Use file afterwards
 }
 //Read save struct from file (file -> save -> game) and change game
-void load_file(Save *self, int level, Entity*player) {
+void load_file(Save *self, int level, Entity*player, Entity*enemy1, Entity*enemy2, Entity*enemy3) {
 	//Load from file
 	FILE *saveFile = fopen("save/saveFile.birbSav", "rb");
 	fread(&(*self), sizeof(struct Save_S), 1, saveFile);
@@ -58,6 +63,13 @@ void load_file(Save *self, int level, Entity*player) {
 	player->health = self->player_health;
 	gui_set_health(player->health);
 	//player_health_set(player, health);
+
+	enemy1->position = self->enemy1.position;
+	enemy1->timer = self->enemy1.timer;
+	enemy2->position = self->enemy2.position;
+	enemy2->timer = self->enemy2.timer;
+	enemy3->position = self->enemy3.position;
+	enemy3->timer = self->enemy3.timer;
 
 	//slog("%i", self->level);
 	slog("Save");

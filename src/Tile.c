@@ -120,10 +120,10 @@ Tile *tile_new_spike(Vector2D position, Vector2D scale) {
 Tile *tile_new_heatArea(Vector2D position, Vector2D scale) {
 	Tile *tile = tile_new();
 	if (tile) {
-		tile->sprite = gf2d_sprite_load_image("images/Spikes.png"); //Load spike tile sprite
+		tile->sprite = gf2d_sprite_load_image("images/Heat Area.png"); //Load spike tile sprite
 		tile->scale = scale;
 		tile->position = position;
-		tile->hitBox = gf2d_shape_rect(position.x, position.y, 20 * scale.x, 5 * scale.y); //Sprite of jpg size
+		tile->hitBox = gf2d_shape_rect(position.x, position.y, 400 * scale.x, 400 * scale.y); //Sprite of jpg size
 		tile->hitBox.id = 4;
 		return tile;
 	}
@@ -131,6 +131,50 @@ Tile *tile_new_heatArea(Vector2D position, Vector2D scale) {
 		return NULL;
 }
 
+//Create a Heat Area Tile
+Tile *tile_new_fire(Vector2D position, Vector2D scale) {
+	Tile *tile = tile_new();
+	if (tile) {
+		tile->sprite = gf2d_sprite_load_image("images/Fire.png"); //Load spike tile sprite
+		tile->scale = scale;
+		tile->position = position;
+		tile->hitBox = gf2d_shape_rect(position.x, position.y, 482 * scale.x, 594 * scale.y); //Sprite of jpg size
+		tile->hitBox.id = 5;
+		return tile;
+	}
+	else
+		return NULL;
+}
+
+//Create a Gravity Tile
+Tile *tile_new_gravity(Vector2D position, Vector2D scale) {
+	Tile *tile = tile_new();
+	if (tile) {
+		tile->sprite = gf2d_sprite_load_image("images/Gravity.png"); //Load spike tile sprite
+		tile->scale = scale;
+		tile->position = position;
+		tile->hitBox = gf2d_shape_rect(position.x, position.y, 400 * scale.x, 400 * scale.y); //Sprite of jpg size
+		tile->hitBox.id = 6;
+		return tile;
+	}
+	else
+		return NULL;
+}
+
+//Create a Heat Area Tile
+Tile *tile_new_bottomless(Vector2D position, Vector2D scale) {
+	Tile *tile = tile_new();
+	if (tile) {
+		tile->sprite = gf2d_sprite_load_image("images/Bottomless.png"); //Load spike tile sprite
+		tile->scale = scale;
+		tile->position = position;
+		tile->hitBox = gf2d_shape_rect(position.x, position.y, 400 * scale.x, 518 * scale.y); //Sprite of jpg size
+		tile->hitBox.id = 7;
+		return tile;
+	}
+	else
+		return NULL;
+}
 
 //Create Exit Door
 Tile *tile_new_Door(Vector2D position, Vector2D scale) {
@@ -203,10 +247,20 @@ void load_tilemap(int level, Tile *tile) {
 	if (level == 1 || !level) { //If level is null, load level 1 by default
 		//create tilemap (Put in separate files)
 		tile = tile_new_invisible(vector2d(0, 520), vector2d(0.15, 0.2));
+		tile = tile_new_bottomless(vector2d(153.75, 680), vector2d(0.3, 0.1));
 		tile = tile_new_invisible(vector2d(0, 290), vector2d(0.12, 0.01));
+		tile = tile_new_spike(vector2d(153.6, 390), vector2d(2, 2));
 		tile = tile_new_invisible(vector2d(153.6, 400), vector2d(0.12, 0.01));
 		tile = tile_new_invisible(vector2d(210, 190), vector2d(0.06, 0.01));
 		tile = tile_new_invisible(vector2d(270.44, 650), vector2d(0.20, 0.11)); //Fridge Door
+		tile = tile_new_heatArea(vector2d(270.44, 70), vector2d(0.5, 0.2)); //Fridge Door
+		tile = tile_new_gravity(vector2d(270.44, 300), vector2d(0.5, 0.6)); //Fridge Door
+		tile = tile_new_fire(vector2d(276, 160), vector2d(0.05, 0.05)); //Fridge Door
+		tile = tile_new_fire(vector2d(306, 160), vector2d(0.05, 0.05)); //Fridge Door
+		tile = tile_new_fire(vector2d(336, 160), vector2d(0.05, 0.05)); //Fridge Door
+		tile = tile_new_fire(vector2d(366, 160), vector2d(0.05, 0.05)); //Fridge Door
+		tile = tile_new_fire(vector2d(396, 160), vector2d(0.05, 0.05)); //Fridge Door
+		tile = tile_new_fire(vector2d(426, 160), vector2d(0.05, 0.05)); //Fridge Door
 		tile = tile_new_invisible(vector2d(270.44, 190), vector2d(0.20, 0.11));
 		tile = tile_new_invisible(vector2d(270.44, 190), vector2d(0.01, 0.35));
 		tile = tile_new_invisible(vector2d(270.44, 540), vector2d(0.15, 0.01));

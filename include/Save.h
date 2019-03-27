@@ -14,6 +14,11 @@ typedef struct Save_S {
 	int player_onGround;
 	Vector2D player_velocity;
 	float player_health; /**Current health of player (30.0/full health by default)*/
+
+	Entity enemy1;
+	Entity enemy2;
+	Entity enemy3;
+
 }Save;
 
 /**
@@ -22,7 +27,7 @@ typedef struct Save_S {
 *@param - level - current level to save to file
 *@param - player - pointer to player in game world to save state of
 */
-void save_file(Save *self, int level, Entity*player);
+void save_file(Save *self, int level, Entity*player, Entity*enemy1, Entity*enemy2, Entity*enemy3 );
 
 /**
 *@brief - Load game state from bin file but do not change game (used for initialization)
@@ -37,6 +42,6 @@ void read_file(Save *self, int level);
 *@param - level - current level of the game running (NOT THE SAVE'S LEVEL)
 *@param - player - pointer to player in game world to manipulate from save
 */
-void load_file(Save *self, int level, Entity*player);
+void load_file(Save *self, int level, Entity*player, Entity*enemy1, Entity*enemy2, Entity*enemy3 );
 
 #endif
