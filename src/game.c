@@ -12,10 +12,6 @@
 #include "Projectile.h"
 #include "gui.h"
 
-//GAME.C
-//THE ACTUAL GAME CODE THAT RUNS WHEN THE EXE RUNS.
-//UTILIZES ALL ENGINE FILES
-
 int main(int argc, char * argv[])
 {
 	//int next = level1();
@@ -32,10 +28,10 @@ int level1() {
 	float saveUITimer; //Delay in Save UI
 
 	Save save;
-	Entity * player; //Player
-	Entity * enemy1; //Enemy
-	Entity * enemy2; //Enemy
-	Entity * enemy3; //Enemy
+	Entity * player; 
+	Entity * enemy1; 
+	Entity * enemy2; 
+	Entity * enemy3; 
 	Tile * tile = tile_new_invisible(vector2d(0, 0), vector2d(0, 0)); //Test tile
 
 	Space *space;
@@ -61,10 +57,10 @@ int level1() {
 	gf2d_sprite_init(2048);
 
 	//Initialize entity manager
-
 	entity_manager_init(110); //Max entities allowed on screen
 	tile_manager_init(130); //Max entities allowed on screen
 
+	//setup gui
 	gui_setup_hud();
 	gui_set_health(30);
 	gui_set_energy(1);
@@ -95,6 +91,8 @@ int level1() {
 
 	//create tilemap (Put in separate files)
 	load_tilemap(1, tile);
+
+	//create enemies
 	enemy1 = enemy_new(11, vector2d(1000, 330), space);
 	enemy2 = enemy_new(12, vector2d(271, 640), space);
 	enemy3 = enemy_new(13, vector2d(980, 330), space);
@@ -142,6 +140,7 @@ int level1() {
 			saveUITimer = 0;
 			saveUIFlag = 1;
 		}
+		//Loading
 		if (keys[SDL_SCANCODE_P]) {
 			load_file(&save, 1, player, enemy1, enemy2, enemy3);
 			saveMessage = gf2d_sprite_load_image("images/ui/Loaded.png");
@@ -152,6 +151,7 @@ int level1() {
 		//UI elements last (Mouse counts as UI)
 		gui_draw_hud();
 
+		//Save UI
 		if (saveUIFlag == 1) {
 			//Saved Game
 			gf2d_sprite_draw(
@@ -200,10 +200,10 @@ int level2() {
 	float saveUITimer; //Delay in Save UI
 
 	Save save;
-	Entity * player; //Player
-	Entity * enemy1; //Player
-	Entity * enemy2; //Player
-	Entity * enemy3; //Player
+	Entity * player;
+	Entity * enemy1; 
+	Entity * enemy2; 
+	Entity * enemy3; 
 	Tile * tile = tile_new_invisible(vector2d(0, 0), vector2d(0, 0)); //Test tile
 
 	Space *space;
@@ -229,10 +229,10 @@ int level2() {
 	gf2d_sprite_init(2048);
 
 	//Initialize entity manager
-
 	entity_manager_init(110); //Max entities allowed on screen
 	tile_manager_init(130); //Max entities allowed on screen
 
+	//Setup gui
 	gui_setup_hud();
 	gui_set_health(30);
 	gui_set_energy(1);
@@ -265,6 +265,8 @@ int level2() {
 
 	//create tilemap (Put in separate files)
 	load_tilemap(2, tile);
+
+	//load enemies
 	enemy1 = enemy_new(11, vector2d(1000, 330), space);
 	enemy2 = enemy_new(12, vector2d(271, 640), space);
 	enemy3 = enemy_new(13, vector2d(980, 330), space);
@@ -312,6 +314,7 @@ int level2() {
 			saveUITimer = 0;
 			saveUIFlag = 1;
 		}
+		//Loading
 		if (keys[SDL_SCANCODE_P]) {
 			load_file(&save, 2, player, enemy1, enemy2, enemy3);
 			saveMessage = gf2d_sprite_load_image("images/ui/Loaded.png");
@@ -322,6 +325,7 @@ int level2() {
 		//UI elements last (Mouse counts as UI)
 		gui_draw_hud();
 
+		//Save UI
 		if (saveUIFlag == 1) {
 			//Saved Game
 			gf2d_sprite_draw(
@@ -356,7 +360,6 @@ int level2() {
 
 			//slog("Rendering at %f FPS", gf2d_graphics_get_frames_per_second()); //Display framerate
 	}
-
 	slog("---==== END ====---");
 	return 0;
 }

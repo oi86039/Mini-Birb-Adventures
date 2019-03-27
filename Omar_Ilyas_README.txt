@@ -21,9 +21,9 @@ Deliverables (All completed!)
 		- Load/ Save states
 		
 	- Specific
-		- The player has at least 5 different abilities (Dash, ShootNormal, Long, Spread, Rapid Fire)
-		- 5 different obstacles (spikes, heat, fire, Gravity area, bullets, )
-		- 3 different enemy behaviors (Charge player, Fly at player. Shoot at player)
+		- The player has at least 5 different abilities
+		- 5 different obstacles
+		- 3 different enemy behaviors
 
 Deliverable Descriptions | How To Test All Deliverables
 	- Common

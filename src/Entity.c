@@ -119,7 +119,6 @@ void entity_update(Entity *ent, Space*space, Entity *player) {
 		else if (ent->loop == 0)
 			ent->currFrame = ent->endFrame; //Stall animation
 	}
-	//if (ent->update)ent->update(ent); //Run entity's Update function after this
 	if (ent->projectile_update)ent->projectile_update(ent, space);
 	if (ent->enemy_update)ent->enemy_update(ent,player, space);
 }

@@ -32,6 +32,7 @@ void projectile_update(Entity *self, Space *space);
 *@brief Method that runs when projectile touches another body
 *@param self - projectile body
 *@return other - body that projectile touches
+*@return if successful, return 1; else return 0;
 */
 int projectile_bodyTouch(struct Body_S *self, struct Body_S *other, Collision *collision);
 
@@ -39,6 +40,7 @@ int projectile_bodyTouch(struct Body_S *self, struct Body_S *other, Collision *c
 *@brief Method that runs when projectile touches another body
 *@param self - projectile body
 *@return other - body that projectile touches
+*@return if successful, return 1; else return 0;
 */
 int projectile_worldTouch(struct Body_S *self, Collision *collision);
 
