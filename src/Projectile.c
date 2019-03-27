@@ -66,6 +66,16 @@ Entity *projectile_new(Proj_Type type, Vector2D velocity, Entity *shooter, Space
 		projectile->timeLimit = 0.07;
 		rapid_count++;
 	}
+	else if (type == ENEMY_LONG) {
+		projectile->spriteSheet = gf2d_sprite_load_image("images/Long.png");
+		projectile->colorShift = gf2d_color_to_vector4(gf2d_color(1, 0.5, 0.5, 1));
+		projectile->scale = vector2d(.05, .05);
+		projectile->velocity = velocity;
+		projectile->hitBox = gf2d_shape_circle(projectile->position.x, projectile->position.y, 212 * projectile->scale.x);
+		projectile->offset = vector2d(10, 10);
+		projectile->timeLimit = 1;
+		//long_count++;
+	}
 	else {
 		entity_free(projectile);
 		return NULL;
@@ -108,7 +118,8 @@ Entity *projectile_new(Proj_Type type, Vector2D velocity, Entity *shooter, Space
 void projectile_update(Entity *self, Space *space) {
 
 	self->timer += 0.01; //Increment timer
-	gui_set_energy(self->timer/self->timeLimit);
+	if (self->hitBox.id == 0)
+		gui_set_energy(self->timer / self->timeLimit);
 
 	Collision staticHit = gf2d_space_shape_test(space, self->hitBox);
 	Collision bodyHit;
@@ -122,23 +133,16 @@ void projectile_update(Entity *self, Space *space) {
 
 	//if (staticHit.collided >= 1) { //If projectile touches something, destroy the projectile
 	if (self->timer >= self->timeLimit) {
-		if (self->type == MELEE) {
+		if (self->type == MELEE)
 			melee_count--;
-				projectile_free(space, self);
-		}
-		else if (self->type == LONG) {
+		else if (self->type == LONG)
 			long_count--;
-				projectile_free(space, self);
-		}
-		else if (self->type == SPREAD) {
+		else if (self->type == SPREAD)
 			spread_count--;
-				projectile_free(space, self);
-
-		}
-		else if (self->type == RAPID) {
+		else if (self->type == RAPID)
 			rapid_count--;
-			projectile_free(space, self);
-		}
+		projectile_free(space, self);
+
 	}
 }
 
@@ -159,7 +163,7 @@ int projectile_worldTouch(struct Body_S *self, Collision *collision) {
 void projectile_free(Space *space, Entity*self) {
 	projectile_count--;
 	gf2d_space_remove_body(space, &self->body);
-	gui_set_energy(1);
+	//gui_set_energy(1);
 	entity_free(self);
 }
 

@@ -6,9 +6,10 @@
 #include "gf2d_sprite.h"
 #include "gf2d_collision.h"
 #include "simple_logger.h"
-#include "Player.h"
-#include "Projectile.h"
 #include "Save.h"
+#include "Player.h"
+#include "Enemy.h"
+#include "Projectile.h"
 #include "gui.h"
 
 //GAME.C
@@ -27,15 +28,19 @@ int level1() {
 	int done = 0;
 	const Uint8 * keys;
 	Sprite *sprite;
+	int saveUIFlag = 0; //Trigger save UI timer
+	float saveUITimer; //Delay in Save UI
 
 	Save save;
 	Entity * player; //Player
+	Entity * enemy; //Enemy
 	Tile * tile = tile_new_invisible(vector2d(0, 0), vector2d(0, 0)); //Test tile
 
 	Space *space;
 
 	int mx, my;
 	float mf = 0; //mf = mouse frame; current mouse animation frame
+	Sprite *saveMessage; Vector2D msgScale;
 	Sprite *mouse;
 	Vector4D mouseColor = { 255,100,255,200 };
 
@@ -57,7 +62,7 @@ int level1() {
 
 	entity_manager_init(110); //Max entities allowed on screen
 	tile_manager_init(130); //Max entities allowed on screen
-	
+
 	gui_setup_hud();
 	gui_set_health(30);
 	gui_set_energy(1);
@@ -67,16 +72,8 @@ int level1() {
 
 	/*demo setup*/
 	sprite = gf2d_sprite_load_image("images/backgrounds/bg_flat.png"); // background var
+	msgScale = vector2d(0.35, 0.35);
 	mouse = gf2d_sprite_load_all("images/pointer.png", 32, 32, 16, false); // mouse pointer var
-
-	//Init save file
-	read_file(&save, 1);
-
-	//Create entity (player)
-	player = player_new(vector2d(0, 420), 1, save);
-
-	//create tilemap (Put in separate files)
-	load_tilemap(1, tile);
 
 	//Create space
 	space = gf2d_space_new_full(
@@ -86,8 +83,16 @@ int level1() {
 		vector2d(0, 4),
 		1,
 		0.3);
-
 	if (!space) slog("failed to create space");
+
+	//Init save file
+	read_file(&save, 1);
+
+	//Create entity (player)
+	player = player_new(vector2d(0, 420), 1, save);
+
+	//create tilemap (Put in separate files)
+	load_tilemap(1, tile, enemy);
 
 	//Add to space
 	gf2d_space_add_body(space, &player->body);
@@ -120,28 +125,46 @@ int level1() {
 		//Entities
 		entity_draw_all();
 		if (player)
-			player_update(player, space);
-		entity_update_all(space);
+			player_update(player, space, save, 1);
+		entity_update_all(space, player);
 
 		//Effects
 
 		//Saving
-		if (keys[SDL_SCANCODE_O]) {
+		if (keys[SDL_SCANCODE_O] && player->health > 0) {
 			save_file(&save, 1, player);
+			saveMessage = gf2d_sprite_load_image("images/ui/Saved.png");
+			saveUITimer = 0;
+			saveUIFlag = 1;
 		}
 		if (keys[SDL_SCANCODE_P]) {
 			load_file(&save, 1, player);
+			saveMessage = gf2d_sprite_load_image("images/ui/Loaded.png");
+			saveUITimer = 0;
+			saveUIFlag = 1;
 		}
-
-
 
 		//UI elements last (Mouse counts as UI)
 		gui_draw_hud();
-		
-		//gf2d_sprite_draw_image(gf2d_sprite_load_image("images/Health Text.png"), vector2d(0, 630));
 
-		//gf2d_text_draw_line("testText", FT_Normal, gf2d_color(1, 1, 1, 1), vector2d(500, 630));
-
+		if (saveUIFlag == 1) {
+			//Saved Game
+			gf2d_sprite_draw(
+				saveMessage,
+				vector2d(900, 650),
+				&msgScale,
+				NULL,
+				NULL,
+				NULL,
+				NULL,
+				0);
+			saveUITimer += 0.01;
+			if (saveUITimer >= 1) {
+				saveUITimer = 0;
+				saveUIFlag = 0;
+			}
+		}
+		//Mouse
 		gf2d_sprite_draw(
 			mouse,
 			vector2d(mx, my),
@@ -164,20 +187,23 @@ int level1() {
 }
 
 int level2() {
-
 	/*variable declarations (C standard) */
 	int done = 0;
 	const Uint8 * keys;
 	Sprite *sprite;
+	int saveUIFlag = 0; //Trigger save UI timer
+	float saveUITimer; //Delay in Save UI
 
 	Save save;
 	Entity * player; //Player
+	Entity * enemy; //Player
 	Tile * tile = tile_new_invisible(vector2d(0, 0), vector2d(0, 0)); //Test tile
 
 	Space *space;
 
 	int mx, my;
 	float mf = 0; //mf = mouse frame; current mouse animation frame
+	Sprite *saveMessage; Vector2D msgScale;
 	Sprite *mouse;
 	Vector4D mouseColor = { 255,100,255,200 };
 
@@ -197,25 +223,20 @@ int level2() {
 
 	//Initialize entity manager
 
-	entity_manager_init(1024); //Max entities allowed on screen
-	tile_manager_init(1024); //Max entities allowed on screen
+	entity_manager_init(110); //Max entities allowed on screen
+	tile_manager_init(130); //Max entities allowed on screen
+
 	gui_setup_hud();
+	gui_set_health(30);
+	gui_set_energy(1);
 	//gf2d_text_init("config/fonts.cfg");
 
 	SDL_ShowCursor(SDL_DISABLE);
 
 	/*demo setup*/
 	sprite = gf2d_sprite_load_image("images/backgrounds/bg_flat.png"); // background var
+	msgScale = vector2d(0.35, 0.35);
 	mouse = gf2d_sprite_load_all("images/pointer.png", 32, 32, 16, false); // mouse pointer var
-
-	//Init save file
-	read_file(&save, 2);
-
-	//Create entity (player)
-	player = player_new(vector2d(70, 515), 2, save);
-
-	//create tilemap (Put in separate files)
-	load_tilemap(2, tile);
 
 	//Create space
 	space = gf2d_space_new_full(
@@ -225,8 +246,18 @@ int level2() {
 		vector2d(0, 4),
 		1,
 		0.3);
-
 	if (!space) slog("failed to create space");
+
+	//Init save file
+	read_file(&save, 2);
+
+	//Create entity (player)
+	player = player_new(vector2d(70, 515), 2, save);
+	player->health = save.player_health;
+	gui_set_health(player->health);
+
+	//create tilemap (Put in separate files)
+	load_tilemap(2, tile, enemy);
 
 	//Add to space
 	gf2d_space_add_body(space, &player->body);
@@ -259,28 +290,46 @@ int level2() {
 		//Entities
 		entity_draw_all();
 		if (player)
-			player_update(player, space);
-		entity_update_all(space);
+			player_update(player, space, 2, 2);
+		entity_update_all(space, player);
 
 		//Effects
 
 		//Saving
-		if (keys[SDL_SCANCODE_O]) {
+		if (keys[SDL_SCANCODE_O] && player->health > 0) {
 			save_file(&save, 2, player);
+			saveMessage = gf2d_sprite_load_image("images/ui/Saved.png");
+			saveUITimer = 0;
+			saveUIFlag = 1;
 		}
 		if (keys[SDL_SCANCODE_P]) {
 			load_file(&save, 2, player);
+			saveMessage = gf2d_sprite_load_image("images/ui/Loaded.png");
+			saveUITimer = 0;
+			saveUIFlag = 1;
 		}
-
-
 
 		//UI elements last (Mouse counts as UI)
 		gui_draw_hud();
 
-		//gf2d_sprite_draw_image(gf2d_sprite_load_image("images/Health Text.png"), vector2d(0, 630));
-
-		//gf2d_text_draw_line("testText", FT_Normal, gf2d_color(1, 1, 1, 1), vector2d(500, 630));
-
+		if (saveUIFlag == 1) {
+			//Saved Game
+			gf2d_sprite_draw(
+				saveMessage,
+				vector2d(900, 650),
+				&msgScale,
+				NULL,
+				NULL,
+				NULL,
+				NULL,
+				0);
+			saveUITimer += 0.01;
+			if (saveUITimer >= 1) {
+				saveUITimer = 0;
+				saveUIFlag = 0;
+			}
+		}
+		//Mouse
 		gf2d_sprite_draw(
 			mouse,
 			vector2d(mx, my),

@@ -110,7 +110,7 @@ void entity_draw_all() {
 	}
 }
 
-void entity_update(Entity *ent, Space*space) {
+void entity_update(Entity *ent, Space*space, Entity *player) {
 	if ((!ent) || (!ent->inUse))return; //DO not update unless entity is being used or exists.
 	ent->currFrame += 0.40;
 	if ((ent->currFrame > ent->endFrame)) { //If animation is finished
@@ -119,14 +119,15 @@ void entity_update(Entity *ent, Space*space) {
 		else if (ent->loop == 0)
 			ent->currFrame = ent->endFrame; //Stall animation
 	}
-	if (ent->update)ent->update(ent); //Run entity's Update function after this
+	//if (ent->update)ent->update(ent); //Run entity's Update function after this
 	if (ent->projectile_update)ent->projectile_update(ent, space);
+	if (ent->enemy_update)ent->enemy_update(ent,player, space);
 }
 
-void entity_update_all(Space *space) {
+void entity_update_all(Space *space, Entity *player) {
 	int i;
 	for (i = 0; i < entityManager.maxEntities; i++) {
-		entity_update(&entityManager.entityList[i],space);
+		entity_update(&entityManager.entityList[i],space,player);
 	}
 }
 

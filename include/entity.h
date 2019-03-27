@@ -14,7 +14,7 @@
 #include "gf2d_sprite.h"
 #include "gf2d_collision.h"
 
-typedef enum Proj_Type { MELEE, LONG, SPREAD, RAPID }Proj_Type;
+typedef enum Proj_Type { MELEE, LONG, SPREAD, RAPID, ENEMY_LONG }Proj_Type;
 
 typedef enum Anim { //Names of all animations
 	NONE,
@@ -60,6 +60,7 @@ typedef struct Entity_S
 
 	void(*update)(struct Entity_S* self); /**update function runs every frame for entity*/
 	void(*projectile_update)(struct Entity_S* self, Space *space); /**update function for just projectiles*/
+	void(*enemy_update)(struct Entity_S* self, struct Entity_S* player, Space *space); /**update function for just projectiles*/
 	void(*anim_change_by_name)(struct Entity_S* self, Anim newAnim, int loop); /**changes animation state by enum*/
 	//int(*bodyTouch)(struct Body_S *self, struct Body_S *other, Collision *collision); /**runs when touching another body/entity*/
 	//int(*worldTouch)(struct Body_S *self, Collision *collision); /**run when touching the world space*/

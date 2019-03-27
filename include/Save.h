@@ -8,8 +8,12 @@
 typedef struct Save_S {
 	int level; /**Current level the player is on*/
 	Vector2D player_position; /**Current position of player in world space*/
+	Vector4D player_colorShift;
+	int player_lastDir;
+	Vector2D player_flip;
+	int player_onGround;
+	Vector2D player_velocity;
 	float player_health; /**Current health of player (30.0/full health by default)*/
-	State player_state; /**Current ability of player (normal by default*/
 }Save;
 
 /**

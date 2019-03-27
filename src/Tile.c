@@ -222,7 +222,7 @@ void load_tilemap(int level, Tile *tile) {
 		tile = tile_new_invisible(vector2d(904, 450), vector2d(0.19, 0.02)); //Table Top 	
 		tile = tile_new_invisible(vector2d(1057.84, 650), vector2d(0.09, 0.09)); //Chairs
 		tile = tile_new_invisible(vector2d(1150, 450), vector2d(0.05, 0.4)); //Chairs
-		tile = tile_new_Door(vector2d(100, 405), vector2d(1.5, 1.5)); //Door
+		tile = tile_new_Door(vector2d(1150, 405), vector2d(1.5, 1.5)); //Door
 	}
 	else if (level == 2) {
 		tile = tile_new_invisible(vector2d(0, 1), vector2d(0.32, 0.11)); //Cabinets above waiter
