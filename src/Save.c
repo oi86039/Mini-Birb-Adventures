@@ -25,10 +25,10 @@ void save_file(Save *self, int level, Entity*player, Entity*enemy1, Entity*enemy
 	fwrite(&(*self), sizeof(struct Save_S), 1, saveFile); //Check how this works...
 	fclose(saveFile);
 
-	slog("Save");
-	slog("%f", self->player_health);
-	slog("Player");
-	slog("%f", player->health);
+	//slog("Save");
+	//slog("%f", self->player_health);
+	//slog("Player");
+	//slog("%f", player->health);
 }
 //Read save struct from file (file -> save -> game)
 void read_file(Save *self, int level) {
@@ -37,7 +37,7 @@ void read_file(Save *self, int level) {
 	fread(&(*self), sizeof(struct Save_S), 1, saveFile);
 	fclose(saveFile);
 
-	slog("%i", self->level);
+	//slog("%i", self->level);
 	//Use file afterwards
 }
 //Read save struct from file (file -> save -> game) and change game
@@ -72,9 +72,9 @@ void load_file(Save *self, int level, Entity*player, Entity*enemy1, Entity*enemy
 	enemy3->timer = self->enemy3.timer;
 
 	//slog("%i", self->level);
-	slog("Save");
-	slog("%f", self->player_health);
-	slog("Player");
-	slog("%f", player->health);
+	//slog("Save");
+	//slog("%f", self->player_health);
+	//slog("Player");
+	//slog("%f", player->health);
 	//Use file afterwards
 }

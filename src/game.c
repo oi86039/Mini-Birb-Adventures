@@ -12,7 +12,7 @@
 #include "Projectile.h"
 #include "gui.h"
 
-int main(int argc, char * argv[])
+int main(int argc, char* argv[])
 {
 	//int next = level1();
 	level1();
@@ -22,24 +22,24 @@ int main(int argc, char * argv[])
 int level1() {
 	/*variable declarations (C standard) */
 	int done = 0;
-	const Uint8 * keys;
-	Sprite *sprite;
+	const Uint8* keys;
+	Sprite* sprite;
 	int saveUIFlag = 0; //Trigger save UI timer
 	float saveUITimer; //Delay in Save UI
 
 	Save save;
-	Entity * player; 
-	Entity * enemy1; 
-	Entity * enemy2; 
-	Entity * enemy3; 
-	Tile * tile = tile_new_invisible(vector2d(0, 0), vector2d(0, 0)); //Test tile
+	Entity* player;
+	Entity* enemy1;
+	Entity* enemy2;
+	Entity* enemy3;
+	Tile* tile = tile_new_invisible(vector2d(0, 0), vector2d(0, 0)); //Test tile
 
-	Space *space;
+	Space* space;
 
 	int mx, my;
 	float mf = 0; //mf = mouse frame; current mouse animation frame
-	Sprite *saveMessage; Vector2D msgScale;
-	Sprite *mouse;
+	Sprite* saveMessage; Vector2D msgScale;
+	Sprite* mouse;
 	Vector4D mouseColor = { 255,100,255,200 };
 
 	/*program initializtion*/
@@ -93,9 +93,9 @@ int level1() {
 	load_tilemap(1, tile);
 
 	//create enemies
-	enemy1 = enemy_new(11, vector2d(1000, 330), space);
-	enemy2 = enemy_new(12, vector2d(271, 640), space);
-	enemy3 = enemy_new(13, vector2d(980, 330), space);
+	enemy1 = enemy_new(11, vector2d(1000, 330), space, save);
+	enemy2 = enemy_new(12, vector2d(271, 400), space, save);
+	enemy3 = enemy_new(13, vector2d(980, 330), space, save);
 
 	//Add to space
 	gf2d_space_add_body(space, &player->body);
@@ -194,24 +194,24 @@ int level1() {
 int level2() {
 	/*variable declarations (C standard) */
 	int done = 0;
-	const Uint8 * keys;
-	Sprite *sprite;
+	const Uint8* keys;
+	Sprite* sprite;
 	int saveUIFlag = 0; //Trigger save UI timer
 	float saveUITimer; //Delay in Save UI
 
 	Save save;
-	Entity * player;
-	Entity * enemy1; 
-	Entity * enemy2; 
-	Entity * enemy3; 
-	Tile * tile = tile_new_invisible(vector2d(0, 0), vector2d(0, 0)); //Test tile
+	Entity* player;
+	Entity* enemy1;
+	Entity* enemy2;
+	Entity* enemy3;
+	Tile* tile = tile_new_invisible(vector2d(0, 0), vector2d(0, 0)); //Test tile
 
-	Space *space;
+	Space* space;
 
 	int mx, my;
 	float mf = 0; //mf = mouse frame; current mouse animation frame
-	Sprite *saveMessage; Vector2D msgScale;
-	Sprite *mouse;
+	Sprite* saveMessage; Vector2D msgScale;
+	Sprite* mouse;
 	Vector4D mouseColor = { 255,100,255,200 };
 
 	/*program initializtion*/
@@ -267,9 +267,9 @@ int level2() {
 	load_tilemap(2, tile);
 
 	//load enemies
-	enemy1 = enemy_new(11, vector2d(1000, 330), space);
-	enemy2 = enemy_new(12, vector2d(271, 640), space);
-	enemy3 = enemy_new(13, vector2d(980, 330), space);
+	enemy1 = enemy_new(11, vector2d(1000, 330), space,save);
+	enemy2 = enemy_new(12, vector2d(271, 0), space,save);
+	enemy3 = enemy_new(13, vector2d(980, 330), space,save);
 
 	//Add to space
 	gf2d_space_add_body(space, &player->body);

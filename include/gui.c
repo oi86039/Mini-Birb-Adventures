@@ -24,7 +24,7 @@ void gui_close_hud()
 void gui_setup_hud()
 {
 	memset(&gui, 0, sizeof(GUI));
-	gui.hud = gf2d_sprite_load_image("images/ui/hud.png");
+	//gui.hud = gf2d_sprite_load_image("images/ui/hud.png");
 	atexit(gui_close_hud);
 }
 
