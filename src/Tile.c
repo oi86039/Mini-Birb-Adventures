@@ -6,7 +6,7 @@
 
 //Tile Manager Structure to store and recall entities quickly
 typedef struct {
-	Tile *tileList;
+	Tile* tileList;
 	Uint32 maxTiles;
 }TileManager;
 
@@ -38,7 +38,7 @@ void tile_manager_init(Uint32 maxTiles)
 		return;
 	}
 	//Else, allocate memory based on max tile value (error check it too)
-	tileManager.tileList = (Tile*)malloc(sizeof(Tile)*maxTiles);
+	tileManager.tileList = (Tile*)malloc(sizeof(Tile) * maxTiles);
 	if (!tileManager.tileList)
 	{
 		slog("failed to allocate %i entities for system", maxTiles);
@@ -47,7 +47,7 @@ void tile_manager_init(Uint32 maxTiles)
 	tileManager.maxTiles = maxTiles;
 
 	//Set memory for manipulation
-	memset(tileManager.tileList, 0, sizeof(Tile)*maxTiles);
+	memset(tileManager.tileList, 0, sizeof(Tile) * maxTiles);
 	slog("memory allocated");
 
 	//if exitting the game, destroy tile Manager
@@ -55,7 +55,7 @@ void tile_manager_init(Uint32 maxTiles)
 }
 
 //Create Blank tile
-Tile *tile_new() {
+Tile* tile_new() {
 	int i;
 	for (i = 0; i < tileManager.maxTiles; i++) {
 		//Find empty slot in list to use
@@ -75,8 +75,8 @@ Tile *tile_new() {
 }
 
 ///Create an Invisible Normal Tile
-Tile *tile_new_invisible(Vector2D position, Vector2D scale) {
-	Tile *tile = tile_new();
+Tile* tile_new_invisible(Vector2D position, Vector2D scale) {
+	Tile* tile = tile_new();
 	if (tile) {
 		tile->scale = scale;
 		tile->position = position;
@@ -89,13 +89,13 @@ Tile *tile_new_invisible(Vector2D position, Vector2D scale) {
 }
 
 ///Create a Normal Tile
-Tile *tile_new_normal(Vector2D position, Vector2D scale) {
-	Tile *tile = tile_new();
+Tile* tile_new_normal(Vector2D position, Vector2D shape_scale, Vector2D img_size, Sprite* sprite) {
+	Tile* tile = tile_new();
 	if (tile) {
-		tile->sprite = gf2d_sprite_load_image("images/bricks2.png"); //Load normal tile sprite
-		tile->scale = scale;
+		tile->sprite = sprite; //Load normal tile sprite
+		tile->scale = shape_scale; //Shape scale multiplier
 		tile->position = position;
-		tile->hitBox = gf2d_shape_rect(position.x, position.y, 1024 * scale.x, 1024 * scale.y); //Sprite of jpg size
+		tile->hitBox = gf2d_shape_rect(position.x, position.y, img_size.x * shape_scale.x, img_size.y * shape_scale.y); //Sprite of jpg size
 		tile->hitBox.id = 2;
 		return tile;
 	}
@@ -103,8 +103,8 @@ Tile *tile_new_normal(Vector2D position, Vector2D scale) {
 		return NULL;
 }
 //Create a Spike Tile
-Tile *tile_new_spike(Vector2D position, Vector2D scale) {
-	Tile *tile = tile_new();
+Tile* tile_new_spike(Vector2D position, Vector2D scale) {
+	Tile* tile = tile_new();
 	if (tile) {
 		tile->sprite = gf2d_sprite_load_image("images/Spikes.png"); //Load spike tile sprite
 		tile->scale = scale;
@@ -117,8 +117,8 @@ Tile *tile_new_spike(Vector2D position, Vector2D scale) {
 		return NULL;
 }
 //Create a Heat Area Tile
-Tile *tile_new_heatArea(Vector2D position, Vector2D scale) {
-	Tile *tile = tile_new();
+Tile* tile_new_heatArea(Vector2D position, Vector2D scale) {
+	Tile* tile = tile_new();
 	if (tile) {
 		tile->sprite = gf2d_sprite_load_image("images/Heat Area.png"); //Load spike tile sprite
 		tile->scale = scale;
@@ -132,8 +132,8 @@ Tile *tile_new_heatArea(Vector2D position, Vector2D scale) {
 }
 
 //Create a Heat Area Tile
-Tile *tile_new_fire(Vector2D position, Vector2D scale) {
-	Tile *tile = tile_new();
+Tile* tile_new_fire(Vector2D position, Vector2D scale) {
+	Tile* tile = tile_new();
 	if (tile) {
 		tile->sprite = gf2d_sprite_load_image("images/Fire.png"); //Load spike tile sprite
 		tile->scale = scale;
@@ -147,8 +147,8 @@ Tile *tile_new_fire(Vector2D position, Vector2D scale) {
 }
 
 //Create a Gravity Tile
-Tile *tile_new_gravity(Vector2D position, Vector2D scale) {
-	Tile *tile = tile_new();
+Tile* tile_new_gravity(Vector2D position, Vector2D scale) {
+	Tile* tile = tile_new();
 	if (tile) {
 		tile->sprite = gf2d_sprite_load_image("images/Gravity.png"); //Load spike tile sprite
 		tile->scale = scale;
@@ -162,8 +162,8 @@ Tile *tile_new_gravity(Vector2D position, Vector2D scale) {
 }
 
 //Create a Heat Area Tile
-Tile *tile_new_bottomless(Vector2D position, Vector2D scale) {
-	Tile *tile = tile_new();
+Tile* tile_new_bottomless(Vector2D position, Vector2D scale) {
+	Tile* tile = tile_new();
 	if (tile) {
 		tile->sprite = gf2d_sprite_load_image("images/Bottomless.png"); //Load spike tile sprite
 		tile->scale = scale;
@@ -177,8 +177,8 @@ Tile *tile_new_bottomless(Vector2D position, Vector2D scale) {
 }
 
 //Create Exit Door
-Tile *tile_new_Door(Vector2D position, Vector2D scale) {
-	Tile *tile = tile_new();
+Tile* tile_new_Door(Vector2D position, Vector2D scale) {
+	Tile* tile = tile_new();
 	if (tile) {
 		tile->sprite = gf2d_sprite_load_image("images/SciFi_Door_Pixel.png"); //Load spike tile sprite
 		tile->scale = scale;
@@ -192,7 +192,7 @@ Tile *tile_new_Door(Vector2D position, Vector2D scale) {
 }
 
 //Destroy tile
-void tile_free(Tile *self)
+void tile_free(Tile* self)
 {
 	if (!self)return;
 	if (self->sprite != NULL)
@@ -203,7 +203,7 @@ void tile_free(Tile *self)
 }
 
 //Draw tile
-void tile_draw(Tile *self)
+void tile_draw(Tile* self)
 {
 	if (!self)return;
 	gf2d_sprite_draw(
@@ -235,7 +235,7 @@ void tile_manager_clear() {
 }
 
 //Add tiles to space
-void tile_add_all_to_space(Space *space) {
+void tile_add_all_to_space(Space* space) {
 	int i;
 	for (i = 0; i < tileManager.maxTiles; i++) {
 		gf2d_space_add_static_shape(space, tileManager.tileList[i].hitBox);
@@ -243,39 +243,39 @@ void tile_add_all_to_space(Space *space) {
 }
 
 //Load tilemap
-void load_tilemap(int level, Tile *tile) {
+void load_tilemap(int level, Tile* tile) {
 	if (level == 1 || !level) { //If level is null, load level 1 by default
 		//create tilemap (Put in separate files)
-		tile = tile_new_invisible(vector2d(0, 520), vector2d(0.15, 0.2));
-		tile = tile_new_bottomless(vector2d(153.75, 680), vector2d(0.3, 0.1));
-		tile = tile_new_invisible(vector2d(0, 290), vector2d(0.12, 0.01));
-		tile = tile_new_spike(vector2d(153.6, 390), vector2d(2, 2));
-		tile = tile_new_invisible(vector2d(153.6, 400), vector2d(0.12, 0.01));
-		tile = tile_new_invisible(vector2d(210, 190), vector2d(0.06, 0.01));
-		tile = tile_new_invisible(vector2d(270.44, 650), vector2d(0.20, 0.11)); //Fridge Door
-		tile = tile_new_heatArea(vector2d(270.44, 70), vector2d(0.5, 0.2)); //Fridge Door
-		tile = tile_new_gravity(vector2d(270.44, 300), vector2d(0.5, 0.6)); //Fridge Door
-		tile = tile_new_fire(vector2d(276, 160), vector2d(0.05, 0.05)); //Fridge Door
-		tile = tile_new_fire(vector2d(306, 160), vector2d(0.05, 0.05)); //Fridge Door
-		tile = tile_new_fire(vector2d(336, 160), vector2d(0.05, 0.05)); //Fridge Door
-		tile = tile_new_fire(vector2d(366, 160), vector2d(0.05, 0.05)); //Fridge Door
-		tile = tile_new_fire(vector2d(396, 160), vector2d(0.05, 0.05)); //Fridge Door
-		tile = tile_new_fire(vector2d(426, 160), vector2d(0.05, 0.05)); //Fridge Door
-		tile = tile_new_invisible(vector2d(270.44, 190), vector2d(0.20, 0.11));
-		tile = tile_new_invisible(vector2d(270.44, 190), vector2d(0.01, 0.35));
-		tile = tile_new_invisible(vector2d(270.44, 540), vector2d(0.15, 0.01));
-		tile = tile_new_invisible(vector2d(330, 400), vector2d(0.15, 0.01));
-		tile = tile_new_invisible(vector2d(474, 400), vector2d(0.01, 0.3));
-		tile = tile_new_invisible(vector2d(484, 450), vector2d(0.25, 0.4));
+		tile = tile_new_invisible(vector2d(0, 520), vector2d(0.15, 0.2)); //Starting Table
+		tile = tile_new_bottomless(vector2d(153.75, 680), vector2d(0.3, 0.1)); //Bottomless pit near start
+		tile = tile_new_invisible(vector2d(0, 290), vector2d(0.12, 0.01)); //Start Common Platform
+		tile = tile_new_spike(vector2d(153.6, 390), vector2d(2, 2)); //Spikes near start
+		tile = tile_new_invisible(vector2d(153.6, 400), vector2d(0.12, 0.01)); //Common Platform for sprites
+		tile = tile_new_invisible(vector2d(210, 190), vector2d(0.06, 0.01)); //Tiny Common by top of fridge
+		tile = tile_new_invisible(vector2d(270.44, 650), vector2d(0.20, 0.11)); //Bottom of Fridge
+		tile = tile_new_heatArea(vector2d(270.44, 70), vector2d(0.5, 0.2)); //Fire on the fridge
+		tile = tile_new_gravity(vector2d(270.44, 300), vector2d(0.5, 0.6)); //Gravity within fridge
+		tile = tile_new_fire(vector2d(276, 160), vector2d(0.05, 0.05)); //Fire on the fridge
+		tile = tile_new_fire(vector2d(306, 160), vector2d(0.05, 0.05)); //Fire on the fridge
+		tile = tile_new_fire(vector2d(336, 160), vector2d(0.05, 0.05)); //Fire on the fridge
+		tile = tile_new_fire(vector2d(366, 160), vector2d(0.05, 0.05)); //Fire on the fridge
+		tile = tile_new_fire(vector2d(396, 160), vector2d(0.05, 0.05)); //Fire on the fridge
+		tile = tile_new_fire(vector2d(426, 160), vector2d(0.05, 0.05)); //Fire on the fridge
+		tile = tile_new_invisible(vector2d(270.44, 190), vector2d(0.20, 0.11)); //Freezer Door
+		tile = tile_new_invisible(vector2d(270.44, 190), vector2d(0.01, 0.35)); //Fridge left wall
+		tile = tile_new_invisible(vector2d(270.44, 540), vector2d(0.15, 0.01)); //Fridge first platform
+		tile = tile_new_invisible(vector2d(330, 400), vector2d(0.15, 0.01)); //Fridge second platform
+		tile = tile_new_invisible(vector2d(474, 400), vector2d(0.01, 0.3)); //Fridge wall right
+		tile = tile_new_invisible(vector2d(484, 450), vector2d(0.25, 0.4)); //Giant Oven
 		tile = tile_new_invisible(vector2d(543, 270), vector2d(0.19, 0.04)); //Oven Cap
 		tile = tile_new_invisible(vector2d(564, 0), vector2d(0.15, 0.265)); //Oven Vent
 		tile = tile_new_invisible(vector2d(740, 230), vector2d(0.45, 0.1)); //Cabinet
-		tile = tile_new_invisible(vector2d(804.25, 450), vector2d(0.05, 0.4)); //Chairs
-		tile = tile_new_invisible(vector2d(856.2, 650), vector2d(0.09, 0.09)); //Chairs
+		tile = tile_new_invisible(vector2d(804.25, 450), vector2d(0.05, 0.4)); //Chair back
+		tile = tile_new_invisible(vector2d(856.2, 650), vector2d(0.09, 0.09)); //Chair seat
 		tile = tile_new_invisible(vector2d(986, 470), vector2d(0.03, 0.11)); //Table 	
 		tile = tile_new_invisible(vector2d(904, 450), vector2d(0.19, 0.02)); //Table Top 	
-		tile = tile_new_invisible(vector2d(1057.84, 650), vector2d(0.09, 0.09)); //Chairs
-		tile = tile_new_invisible(vector2d(1150, 450), vector2d(0.05, 0.4)); //Chairs
+		tile = tile_new_invisible(vector2d(1057.84, 650), vector2d(0.09, 0.09)); //Chair seat right
+		tile = tile_new_invisible(vector2d(1150, 450), vector2d(0.05, 0.4)); //Chair back right
 		tile = tile_new_Door(vector2d(1150, 405), vector2d(1.5, 1.5)); //Door
 	}
 	else if (level == 2) {
@@ -333,11 +333,31 @@ void load_tilemap(int level, Tile *tile) {
 		tile = tile_new_invisible(vector2d(893, 295), vector2d(0.14, 0.015)); //Candle holder (bottom)
 		tile = tile_new_invisible(vector2d(918.5, 310.36), vector2d(0.09, 0.015)); //Candle holder (bottom-most)
 	}
+	else if (level == 3) {
+		tile = tile_new_invisible(vector2d(10, 60), vector2d(0.06, 0.01)); //Top of first lantern
+		tile = tile_new_heatArea(vector2d(10, 69), vector2d(0.15, 0.16)); // Middle of first lantern
+		tile = tile_new_fire(vector2d(23, 90), vector2d(0.07, 0.07)); // Middle of first lantern
+		tile = tile_new_invisible(vector2d(10, 130), vector2d(0.06, 0.01)); //Bottom of first lantern
+
+
+		tile = tile_new_invisible(vector2d(420, 60), vector2d(0.06, 0.01)); //Top of second lantern
+		tile = tile_new_heatArea(vector2d(420, 69), vector2d(0.15, 0.16)); // Middle of second lantern
+		tile = tile_new_fire(vector2d(433, 90), vector2d(0.07, 0.07)); // Middle of second lantern
+		tile = tile_new_invisible(vector2d(420, 130), vector2d(0.06, 0.01)); //Bottom of second lantern
+
+
+		tile = tile_new_invisible(vector2d(830, 60), vector2d(0.06, 0.01)); //Top of second lantern
+		tile = tile_new_heatArea(vector2d(830, 69), vector2d(0.15, 0.16)); // Middle of second lantern
+		tile = tile_new_fire(vector2d(843, 90), vector2d(0.07, 0.07)); // Middle of second lantern
+		tile = tile_new_invisible(vector2d(830, 130), vector2d(0.06, 0.01)); //Bottom of second lantern
+
+
+	}
 	else slog("invalid level value");
 }
 
 //Destroy Tilemap
-void destroy_tilemap(Space *space) {
+void destroy_tilemap(Space* space) {
 	//Free all tiles
 	int i;
 	for (i = 0; i < tileManager.maxTiles; i++) {

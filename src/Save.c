@@ -48,9 +48,11 @@ void load_file(Save *self, int level, Entity*player, Entity*enemy1, Entity*enemy
 	fclose(saveFile);
 
 	if (level != self->level) {
-		if (self->level == 1) level1();
+		level_load(self->level, self->player_position);
+		
+		/*if (self->level == 1) level1();
 		else if (self->level == 2) level2();
-		else slog("Invalid level");
+		else slog("Invalid level");*/
 	}
 
 	//Starting properties when object is made

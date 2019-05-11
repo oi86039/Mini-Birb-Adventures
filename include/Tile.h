@@ -29,10 +29,12 @@ Tile *tile_new();
 /**
 *@brief Return a pointer to a new normal tile with some default properties
 *@param position - vector to determine where tile is placed
-*@param scale - vector to determine size of tile
+*@param shape_scale - vector to determine size of tile
+*@param img_size - vector depicting size of sprite for tile (x pixels, y pixels)
+*@param sprite - sprite of the tile chosen
 *@return - pointer to Tile
 */
-Tile *tile_new_normal(Vector2D position, Vector2D scale);
+Tile* tile_new_normal(Vector2D position, Vector2D shape_scale, Vector2D img_size, Sprite* sprite);
 
 /**
 *@brief Return a pointer to a new normal tile with no sprite and some default properties
