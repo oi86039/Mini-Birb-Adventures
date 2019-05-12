@@ -2,10 +2,10 @@
 #include "simple_logger.h"
 #include "gui.h"
 
-void projectile_update(Entity *self, Space *space);
+void projectile_update(Entity* self, Space* space);
 
-int projectile_bodyTouch(struct Body_S *self, struct Body_S *other, Collision *collision);
-int projectile_worldTouch(struct Body_S *self, Collision *collision);
+int projectile_bodyTouch(struct Body_S* self, struct Body_S* other, Collision* collision);
+int projectile_worldTouch(struct Body_S* self, Collision* collision);
 
 static int projectile_count = 0; /**Total count of projectiles*/
 static int melee_count = 0; /*count of melee projectiles*/
@@ -13,12 +13,12 @@ static int long_count = 0; /*count of long shot projectiles*/
 static int spread_count = 0; /*count of spread shot projectiles*/
 static int rapid_count = 0; /*count of rapid fire projectiles*/
 
-Entity *projectile_new(Proj_Type type, Vector2D velocity, Entity *shooter, Space *space)
+Entity* projectile_new(Proj_Type type, Vector2D velocity, Entity* shooter, Space* space)
 {
 	//Don't spawn if >projectile_count
 	if (projectile_count > 30) return NULL; //Only 10 projectiles allowed
 
-	Entity *projectile = NULL;
+	Entity* projectile = NULL;
 	projectile = entity_new();
 	if (!projectile) {
 		slog("failed to allocate new projectile entity");
@@ -65,6 +65,7 @@ Entity *projectile_new(Proj_Type type, Vector2D velocity, Entity *shooter, Space
 		projectile->offset = vector2d(10, 10);
 		projectile->timeLimit = 0.07;
 		rapid_count++;
+		//projectile id
 	}
 	else if (type == ENEMY_LONG) {
 		projectile->spriteSheet = gf2d_sprite_load_image("images/Long.png");
@@ -115,11 +116,11 @@ Entity *projectile_new(Proj_Type type, Vector2D velocity, Entity *shooter, Space
 }
 
 //Register hit and move projectile
-void projectile_update(Entity *self, Space *space) {
+void projectile_update(Entity * self, Space * space) {
 
 	self->timer += 0.01; //Increment timer
-	if (self->hitBox.id == 0)
-		gui_set_energy(self->timer / self->timeLimit);
+	//if (shooter->hitBox.id == 0)
+	//gui_set_energy(self->timer / self->timeLimit);
 
 	Collision staticHit = gf2d_space_shape_test(space, self->hitBox);
 	Collision bodyHit;
@@ -142,25 +143,24 @@ void projectile_update(Entity *self, Space *space) {
 		else if (self->type == RAPID)
 			rapid_count--;
 		projectile_free(space, self);
-
 	}
 }
 
-int projectile_bodyTouch(struct Body_S *self, struct Body_S *other, Collision *collision) {
-	if (collision->collided = 1) {
+int projectile_bodyTouch(struct Body_S* self, struct Body_S* other, Collision * collision) {
+	if (collision->collided == 1) {
 		slog("Body touch successful");
 		return 1;
 	}
 	else return 0;
 }
-int projectile_worldTouch(struct Body_S *self, Collision *collision) {
-	if (collision->collided = 1) {
+int projectile_worldTouch(struct Body_S* self, Collision * collision) {
+	if (collision->collided == 1) {
 		slog("World touch successful");
 		return 1;
 	}
 	else return 0;
 }
-void projectile_free(Space *space, Entity*self) {
+void projectile_free(Space * space, Entity * self) {
 	projectile_count--;
 	gf2d_space_remove_body(space, &self->body);
 	//gui_set_energy(1);

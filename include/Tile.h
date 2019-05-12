@@ -34,7 +34,7 @@ Tile *tile_new();
 *@param sprite - sprite of the tile chosen
 *@return - pointer to Tile
 */
-Tile* tile_new_normal(Vector2D position, Vector2D shape_scale, Vector2D img_size, Sprite* sprite);
+Tile* tile_new_normal(Vector2D position, Vector2D shape_scale, Sprite* sprite, Vector2D img_size, int collide);
 
 /**
 *@brief Return a pointer to a new normal tile with no sprite and some default properties
@@ -58,7 +58,7 @@ Tile *tile_new_spike(Vector2D position, Vector2D scale);
 *@param scale - vector to determine size of tile
 *@return - pointer to Tile
 */
-Tile *tile_new_Door(Vector2D position, Vector2D scale);
+Tile *tile_new_Door(Vector2D position);
 
 /**
 *@brief Return a pointer to a fire tile that quickly saps health when touched

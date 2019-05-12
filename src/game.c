@@ -16,11 +16,11 @@ int main(int argc, char* argv[])
 {
 	//int next = level1();
 	//Load Level 1
-	level_load(1);
+	//level_load(1);
 	//Load Level 2
 	//level_load(2, (vector2d(70, 515));
 	//Load Level 3
-	//level_load(3, vector2d(20, 0));
+	level_load(3);
 	//Load Level 4
 	//level_load(4, vector2d(0, 420));
 	//level3();
@@ -31,6 +31,7 @@ int level_load(int level) {
 	/*variable declarations (C standard) */
 	int done = 0;
 	const Uint8* keys;
+	SDL_Event event; //SDL Current Keyboard/mouse event (GOD HELP US ALL)
 	Sprite* sprite;
 	int saveUIFlag = 0; //Trigger save UI timer
 	float saveUITimer; //Delay in Save UI
@@ -40,9 +41,12 @@ int level_load(int level) {
 	Entity* enemy1;
 	Entity* enemy2;
 	Entity* enemy3;
+	Entity* LOL; //Entity for deug painting purposes
 	Tile* tile = tile_new_invisible(vector2d(0, 0), vector2d(0, 0)); //Test tile
 
 	Space* space;
+
+	int debug_id = 0;
 
 	int mx, my;
 	float mf = 0; //mf = mouse frame; current mouse animation frame
@@ -65,7 +69,7 @@ int level_load(int level) {
 	gf2d_sprite_init(2048);
 
 	//Initialize entity manager
-	entity_manager_init(110); //Max entities allowed on screen
+	entity_manager_init(1010); //Max entities allowed on screen
 	tile_manager_init(130); //Max entities allowed on screen
 
 	//setup gui
@@ -101,21 +105,26 @@ int level_load(int level) {
 		player = player_new(vector2d(70, 515), level, save);
 	else if (level == 3)
 		player = player_new(vector2d(20, 0), level, save);
-	//else if (level == 4)
-	//	player = player_new(vector2d(0, 420), level, save);
+	else if (level == 4)
+		player = player_new(vector2d(0, 420), level, save);
 
 
 
 	//create tilemap (Put in separate files)
 	load_tilemap(level, tile);
 
+	//Entity* enemy_new(int enemyId, Vector2D position, int level, Save* save
+
 	//create enemies
-	enemy1 = enemy_new(11, vector2d(1000, 330), space, save);
-	enemy2 = enemy_new(12, vector2d(271, 400), space, save);
-	enemy3 = enemy_new(13, vector2d(980, 330), space, save);
+	enemy1 = enemy_new(11, vector2d(1000, 330), level, save);
+	enemy2 = enemy_new(12, vector2d(271, 400), level, save);
+	enemy3 = enemy_new(13, vector2d(980, 330), level, save);
 
 	//Add to space
 	gf2d_space_add_body(space, &player->body);
+	gf2d_space_add_body(space, &enemy1->body);
+	gf2d_space_add_body(space, &enemy2->body);
+	gf2d_space_add_body(space, &enemy3->body);
 	tile_add_all_to_space(space);
 	slog("Bodies added to space");
 
@@ -124,8 +133,35 @@ int level_load(int level) {
 	{
 		SDL_PumpEvents();   // update SDL's internal event structures (ACTUAL UPDATING - DO NOT TOUCH)
 		keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
+
+		SDL_PollEvent(&event);
+
 		/*update things here*/
 		SDL_GetMouseState(&mx, &my);
+		//Toggle enemy
+		if (event.type == SDL_KEYUP & SDLK_LEFTBRACKET) {
+			debug_id--;
+			if (debug_id < 0)debug_id = 3;
+		}
+		else if (event.type == SDL_KEYUP & SDLK_RIGHTBRACKET) {
+			debug_id++;
+			if (debug_id > 3)debug_id = 0;
+		}
+
+		//Paint enemies on click
+		if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			/*slog("%i", mx);
+			slog("%i", my);*/
+			if (debug_id == 0)
+				LOL = player_new(vector2d(mx, my), level, save);
+			else if (debug_id == 1)
+				LOL = enemy_new(11, vector2d(mx, my), level, save);
+			else if (debug_id == 2)
+				LOL = enemy_new(12, vector2d(mx, my), level, save);
+			else if (debug_id == 3)
+				LOL = enemy_new(13, vector2d(mx, my), level, save);
+		}
+
 
 		mf += 0.01; //Mouse animation rate Adds +0.1 to animation every tic. 10 tics per animation frame
 		if (mf >= 16.0)mf = 0;

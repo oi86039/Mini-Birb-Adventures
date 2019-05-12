@@ -12,21 +12,21 @@
 *@param space - the physics space the projectile should be placed in
 *@return pointer to projectile entity
 */
-Entity *projectile_new(Proj_Type type, Vector2D velocity, Entity *shooter, Space *space);
+Entity* projectile_new(Proj_Type type, Vector2D velocity, Entity* shooter, Space* space);
 
 /**
 * @brief - remove projectile from space and memory
 * @param - space - physics space proj is in
 * @param - self - pointer to projectile
 */
-void projectile_free(Space *space, Entity*self);
+void projectile_free(Space* space, Entity* self);
 
 /**
 *@brief Update position and collision of projectile
 *@param self - pointer to projectile entity
 *@param space - the physics space the projectile should be placed in
 */
-void projectile_update(Entity *self, Space *space);
+void projectile_update(Entity* self, Space* space);
 
 /** NON-FUNCTIONAL
 *@brief Method that runs when projectile touches another body
@@ -34,7 +34,7 @@ void projectile_update(Entity *self, Space *space);
 *@return other - body that projectile touches
 *@return if successful, return 1; else return 0;
 */
-int projectile_bodyTouch(struct Body_S *self, struct Body_S *other, Collision *collision);
+int projectile_bodyTouch(struct Body_S* self, struct Body_S* other, Collision* collision);
 
 /** NON-FUNCTIONAL
 *@brief Method that runs when projectile touches another body
@@ -42,6 +42,6 @@ int projectile_bodyTouch(struct Body_S *self, struct Body_S *other, Collision *c
 *@return other - body that projectile touches
 *@return if successful, return 1; else return 0;
 */
-int projectile_worldTouch(struct Body_S *self, Collision *collision);
+int projectile_worldTouch(struct Body_S* self, Collision* collision);
 
 #endif
