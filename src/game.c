@@ -3,6 +3,7 @@
 #include "Tile.h"
 #include "gf2d_graphics.h"
 #include "gf2d_text.h"
+#include "gf2d_audio.h"
 #include "gf2d_sprite.h"
 #include "gf2d_collision.h"
 #include "simple_logger.h"
@@ -36,6 +37,9 @@ int level_load(int level) {
 	int saveUIFlag = 0; //Trigger save UI timer
 	float saveUITimer; //Delay in Save UI
 
+	Sound* music;
+	//Sound shoot;
+
 	Save save;
 	Entity* player;
 	Entity* enemy1;
@@ -66,6 +70,7 @@ int level_load(int level) {
 		vector4d(0, 0, 0, 255),
 		0);
 	gf2d_graphics_set_frame_delay(16);
+	gf2d_audio_init(256, 16, 4, 1, 1, 1);
 	gf2d_sprite_init(2048);
 
 	//Initialize entity manager
@@ -84,6 +89,8 @@ int level_load(int level) {
 	sprite = gf2d_sprite_load_image("images/backgrounds/bg_flat.png"); // background var
 	msgScale = vector2d(0.35, 0.35);
 	mouse = gf2d_sprite_load_all("images/pointer.png", 32, 32, 16, false); // mouse pointer var
+
+	music = gf2d_sound_load("audio/bensound-theelevatorbossanova.wav", 10, 1);
 
 	//Create space
 	space = gf2d_space_new_full(
@@ -128,6 +135,8 @@ int level_load(int level) {
 	tile_add_all_to_space(space);
 	slog("Bodies added to space");
 
+	gf2d_sound_play(music, 20, 100, 1, -1);
+
 	/*main game loop */
 	while (!done)	//UPDATE FUNCTION
 	{
@@ -138,6 +147,7 @@ int level_load(int level) {
 
 		/*update things here*/
 		SDL_GetMouseState(&mx, &my);
+
 		//Toggle enemy
 		if (event.type == SDL_KEYUP & SDLK_LEFTBRACKET) {
 			debug_id--;
