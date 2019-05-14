@@ -24,3 +24,6 @@ https://freesound.org/people/LittleRobotSoundFactory/sounds/270336/
 
 Hit_01.wav - LittleRobotSoundFactory - Creative Commons
 https://freesound.org/people/LittleRobotSoundFactory/sounds/270326/
+
+Jingle_Win_00.wav - LittleRobotSoundFactory - Creative Commons
+https://freesound.org/people/LittleRobotSoundFactory/sounds/270333/

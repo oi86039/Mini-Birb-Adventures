@@ -98,8 +98,8 @@ void entity_draw(Entity *self)
 		&self->flip, //Flip
 		&self->colorShift,	//ColorShift
 		self->currFrame); //Frame
-	if (&self->hitBox)
-		gf2d_shape_draw(self->hitBox, gf2d_color(0, 255, 0, 255)); //DEBUGGING PURPOSES
+	//if (&self->hitBox)
+		//gf2d_shape_draw(self->hitBox, gf2d_color(0, 255, 0, 255)); //DEBUGGING PURPOSES
 }
 
 //Draw all entities

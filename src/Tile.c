@@ -217,7 +217,8 @@ void tile_draw(Tile* self)
 		&self->flip, //Flip
 		NULL	//ColorShift
 		, 0); //Frame
-	gf2d_shape_draw(self->hitBox, gf2d_color(255, 0, 0, 255)); //FOR DEBUGGING PURPOSES
+	if (!self->sprite)
+		gf2d_shape_draw(self->hitBox, gf2d_color(255, 0, 0, 255)); //FOR DEBUGGING PURPOSES
 }
 
 //Draw all tiles
@@ -334,6 +335,7 @@ void load_tilemap(int level, Tile* tile) {
 		tile = tile_new_invisible(vector2d(1009, 236), vector2d(0.013, 0.06)); //Candle 3 bottom
 		tile = tile_new_invisible(vector2d(893, 295), vector2d(0.14, 0.015)); //Candle holder (bottom)
 		tile = tile_new_invisible(vector2d(918.5, 310.36), vector2d(0.09, 0.015)); //Candle holder (bottom-most)
+		tile = tile_new_Door(vector2d(1070, 352)); //Door
 	}
 	else if (level == 3) {
 		tile = tile_new_invisible(vector2d(10, 60), vector2d(0.06, 0.01)); //Top of first lantern
@@ -383,7 +385,7 @@ void load_tilemap(int level, Tile* tile) {
 	}
 	else if (level == 4) {
 
-	tile = tile_new_invisible(vector2d(20, 100), vector2d(0.06, 0.01)); //Top of second lantern
+		tile = tile_new_invisible(vector2d(20, 100), vector2d(0.06, 0.01)); //Top of second lantern
 
 
 	}

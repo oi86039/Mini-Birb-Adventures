@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
 	//Load Level 2
 	//level_load(2, (vector2d(70, 515));
 	//Load Level 3
-	level_load(1);
+	level_load(2);
 	//Load Level 4
 	//level_load(4, vector2d(0, 420));
 	//level3();
@@ -41,7 +41,7 @@ int level_load(int level) {
 	Save save;
 	Entity* player;
 	Entity* enemy[1009];
-	Entity* LOL; //Entity for deug painting purposes
+	int enemyIndex = 3;
 	Tile* tile = tile_new_invisible(vector2d(0, 0), vector2d(0, 0)); //Test tile
 
 	Space* space;
@@ -140,7 +140,7 @@ int level_load(int level) {
 	tile_add_all_to_space(space);
 	slog("Bodies added to space");
 
-	gf2d_sound_play(music[level-1], 5000, 1, 0.1, -1); //Play background music
+	gf2d_sound_play(music[level - 1], 5000, 1, 0.1, -1); //Play background music
 
 	/*main game loop */
 	while (!done)	//UPDATE FUNCTION
@@ -165,15 +165,25 @@ int level_load(int level) {
 		}
 
 		//Paint enemies on click
-		if ((event.type == SDL_MOUSEBUTTONDOWN) & (SDL_BUTTON(SDL_BUTTON_LEFT))) {
-			if (debug_id == 0)
-				LOL = player_new(vector2d(mx, my), level, save);
-			else if (debug_id == 1)
-				LOL = enemy_new(11, vector2d(mx, my), level, save);
+		if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			if (debug_id == 0) {
+				enemy[enemyIndex] = player_new(vector2d(mx, my), level, save);
+				enemyIndex++;
+			}
+			else if (debug_id == 1) {
+				enemy[enemyIndex] = enemy_new(11, vector2d(mx, my), level, save);
+				enemyIndex++;
+			}
 			else if (debug_id == 2)
-				LOL = enemy_new(12, vector2d(mx, my), level, save);
+			{
+				enemy[enemyIndex] = enemy_new(12, vector2d(mx, my), level, save);
+				enemyIndex++;
+			}
 			else if (debug_id == 3)
-				LOL = enemy_new(13, vector2d(mx, my), level, save);
+			{
+				enemy[enemyIndex] = enemy_new(13, vector2d(mx, my), level, save);
+				enemyIndex++;
+			}
 		}
 
 		gf2d_graphics_clear_screen();// clears drawing buffers
@@ -206,6 +216,9 @@ int level_load(int level) {
 		//Loading
 		if (keys[SDL_SCANCODE_P]) {
 			load_file(&save, level, player, enemy[0], enemy[1], enemy[2]);
+			for (int i = 3; i < enemyIndex; i++)
+				entity_free(enemy[i]);
+			enemyIndex = 3;
 			saveMessage = gf2d_sprite_load_image("images/ui/Loaded.png");
 			saveUITimer = 0;
 			saveUIFlag = 1;
