@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include "Save.h"
+#include "Entity.h"
 #include "simple_logger.h"
 #include "Player.h"
 #include "gui.h"
 
 //Save to save struct and write to file (game -> save -> file)
-void save_file(Save *self, int level, Entity*player, Entity*enemy1, Entity*enemy2, Entity*enemy3) {
+void save_file(Save *self, int level, Entity*player, Entity*enemy1, Entity*enemy2, Entity*enemy3, Entity* list) {
 	//Set struct parameters
 	self->level = level;
 	self->player_position = player->position;

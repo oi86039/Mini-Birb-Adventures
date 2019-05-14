@@ -170,7 +170,7 @@ Tile* tile_new_bottomless(Vector2D position, Vector2D scale) {
 		tile->sprite = gf2d_sprite_load_image("images/Bottomless.png"); //Load spike tile sprite
 		tile->scale = scale;
 		tile->position = position;
-		tile->hitBox = gf2d_shape_rect(position.x, position.y, 400 * scale.x, 518 * scale.y); //Sprite of jpg size
+		tile->hitBox = gf2d_shape_rect(position.x, position.y, 241 * scale.x, 313 * scale.y); //Sprite of jpg size
 		tile->hitBox.id = 7;
 		return tile;
 	}
@@ -183,9 +183,9 @@ Tile* tile_new_Door(Vector2D position) {
 	Tile* tile = tile_new();
 	if (tile) {
 		tile->sprite = gf2d_sprite_load_image("images/SciFi_Door_Pixel.png"); //Load spike tile sprite
-		tile->scale = vector2d(1.5, 1.5);
+		tile->scale = vector2d(0.2, 0.2);
 		tile->position = position;
-		tile->hitBox = gf2d_shape_rect(position.x, position.y, 32 * tile->scale.x, 32 * tile->scale.y); //Sprite of jpg size
+		tile->hitBox = gf2d_shape_rect(position.x, position.y, 119 * tile->scale.x, 316 * tile->scale.y); //Sprite of jpg size
 		tile->hitBox.id = 10;
 		return tile;
 	}
@@ -249,7 +249,7 @@ void load_tilemap(int level, Tile* tile) {
 	if (level == 1 || !level) { //If level is null, load level 1 by default
 		//create tilemap (Put in separate files)
 		tile = tile_new_invisible(vector2d(0, 520), vector2d(0.15, 0.2)); //Starting Table
-		tile = tile_new_bottomless(vector2d(153.75, 680), vector2d(0.3, 0.1)); //Bottomless pit near start
+		tile = tile_new_bottomless(vector2d(153.75, 680), vector2d(0.49, 0.2)); //Bottomless pit near start
 		tile = tile_new_invisible(vector2d(0, 290), vector2d(0.12, 0.01)); //Start Common Platform
 		tile = tile_new_spike(vector2d(153.6, 390), vector2d(2, 2)); //Spikes near start
 		tile = tile_new_invisible(vector2d(153.6, 400), vector2d(0.12, 0.01)); //Common Platform for sprites
@@ -278,7 +278,7 @@ void load_tilemap(int level, Tile* tile) {
 		tile = tile_new_invisible(vector2d(904, 450), vector2d(0.19, 0.02)); //Table Top 	
 		tile = tile_new_invisible(vector2d(1057.84, 650), vector2d(0.09, 0.09)); //Chair seat right
 		tile = tile_new_invisible(vector2d(1150, 450), vector2d(0.05, 0.4)); //Chair back right
-		tile = tile_new_Door(vector2d(1150, 405)); //Door
+		tile = tile_new_Door(vector2d(1160, 390)); //Door
 	}
 	else if (level == 2) {
 		tile = tile_new_invisible(vector2d(0, 1), vector2d(0.32, 0.11)); //Cabinets above waiter
@@ -362,7 +362,7 @@ void load_tilemap(int level, Tile* tile) {
 		tile = tile_new_invisible(vector2d(1030, 320), vector2d(0.11, 0.015)); //Common Door platform
 		tile = tile_new_invisible(vector2d(1030, 320), vector2d(0.11, 0.015)); //Common Door platform
 		tile = tile_new_invisible(vector2d(1177, 150), vector2d(0.02, 0.4)); //right Open Cabinet Door
-		tile = tile_new_Door(vector2d(1090, 300)); //Door
+		tile = tile_new_Door(vector2d(1070, 235)); //Door
 
 		tile = tile_new_invisible(vector2d(420, 60), vector2d(0.06, 0.01)); //Top of second lantern
 		tile = tile_new_heatArea(vector2d(420, 69), vector2d(0.15, 0.16)); // Middle of second lantern
@@ -377,9 +377,15 @@ void load_tilemap(int level, Tile* tile) {
 		tile = tile_new_invisible(vector2d(830, 130), vector2d(0.06, 0.01)); //Bottom of second lantern
 
 
-		tile = tile_new_bottomless(vector2d(0, 660), vector2d(3, 0.2)); //Bottomless pit
+		tile = tile_new_bottomless(vector2d(0, 660), vector2d(5, 0.2)); //Bottomless pit
 
 		//Place enemies at the end
+	}
+	else if (level == 4) {
+
+	tile = tile_new_invisible(vector2d(20, 100), vector2d(0.06, 0.01)); //Top of second lantern
+
+
 	}
 	else slog("invalid level value");
 }

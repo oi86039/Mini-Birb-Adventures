@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
 	//Load Level 2
 	//level_load(2, (vector2d(70, 515));
 	//Load Level 3
-	level_load(3);
+	level_load(1);
 	//Load Level 4
 	//level_load(4, vector2d(0, 420));
 	//level3();
@@ -33,29 +33,26 @@ int level_load(int level) {
 	int done = 0;
 	const Uint8* keys;
 	SDL_Event event; //SDL Current Keyboard/mouse event (GOD HELP US ALL)
-	Sprite* sprite;
+	Sprite* sprite; //Background pic
 	int saveUIFlag = 0; //Trigger save UI timer
 	float saveUITimer; //Delay in Save UI
-
-	Sound* music;
 	//Sound shoot;
 
 	Save save;
 	Entity* player;
-	Entity* enemy1;
-	Entity* enemy2;
-	Entity* enemy3;
+	Entity* enemy[1009];
 	Entity* LOL; //Entity for deug painting purposes
 	Tile* tile = tile_new_invisible(vector2d(0, 0), vector2d(0, 0)); //Test tile
 
 	Space* space;
 
-	int debug_id = 0;
+	int debug_id = 0; //index for painting
 
 	int mx, my;
 	float mf = 0; //mf = mouse frame; current mouse animation frame
 	Sprite* saveMessage; Vector2D msgScale;
 	Sprite* mouse;
+	Vector2D mouseScale = vector2d(0.1, 0.1);
 	Vector4D mouseColor = { 255,100,255,200 };
 
 	/*program initializtion*/
@@ -73,6 +70,13 @@ int level_load(int level) {
 	gf2d_audio_init(256, 16, 4, 1, 1, 1);
 	gf2d_sprite_init(2048);
 
+	Sound* music[] = {
+		gf2d_sound_load("audio/bensound-theelevatorbossanova.wav", 1, 1),
+		gf2d_sound_load("audio/heliumplains_cut.wav", 1, 1),
+		gf2d_sound_load("audio/Frozen In Time (Chiptune).wav", 1, 1),
+		gf2d_sound_load("audio/FinalBoss.wav", 1, 1),
+	};
+
 	//Initialize entity manager
 	entity_manager_init(1010); //Max entities allowed on screen
 	tile_manager_init(130); //Max entities allowed on screen
@@ -88,9 +92,7 @@ int level_load(int level) {
 	/*demo setup*/
 	sprite = gf2d_sprite_load_image("images/backgrounds/bg_flat.png"); // background var
 	msgScale = vector2d(0.35, 0.35);
-	mouse = gf2d_sprite_load_all("images/pointer.png", 32, 32, 16, false); // mouse pointer var
-
-	music = gf2d_sound_load("audio/bensound-theelevatorbossanova.wav", 10, 1);
+	//mouse = gf2d_sprite_load_all("images/pointer.png", 32, 32, 16, false); // mouse pointer var
 
 	//Create space
 	space = gf2d_space_new_full(
@@ -115,27 +117,30 @@ int level_load(int level) {
 	else if (level == 4)
 		player = player_new(vector2d(0, 420), level, save);
 
-
-
 	//create tilemap (Put in separate files)
 	load_tilemap(level, tile);
 
-	//Entity* enemy_new(int enemyId, Vector2D position, int level, Save* save
-
 	//create enemies
-	enemy1 = enemy_new(11, vector2d(1000, 330), level, save);
-	enemy2 = enemy_new(12, vector2d(271, 400), level, save);
-	enemy3 = enemy_new(13, vector2d(980, 330), level, save);
+	enemy[0] = enemy_new(11, vector2d(1000, 330), level, save);
+	enemy[1] = enemy_new(12, vector2d(271, 400), level, save);
+	enemy[2] = enemy_new(13, vector2d(980, 330), level, save);
+
+	Sprite * debugSprites[] = {
+		player->spriteSheet,
+		enemy[0]->spriteSheet,
+		enemy[1]->spriteSheet,
+		enemy[2]->spriteSheet };
+	mouse = debugSprites[0]; // mouse pointer var
 
 	//Add to space
 	gf2d_space_add_body(space, &player->body);
-	gf2d_space_add_body(space, &enemy1->body);
-	gf2d_space_add_body(space, &enemy2->body);
-	gf2d_space_add_body(space, &enemy3->body);
+	gf2d_space_add_body(space, &enemy[0]->body);
+	gf2d_space_add_body(space, &enemy[1]->body);
+	gf2d_space_add_body(space, &enemy[2]->body);
 	tile_add_all_to_space(space);
 	slog("Bodies added to space");
 
-	gf2d_sound_play(music, 20, 100, 1, -1);
+	gf2d_sound_play(music[level-1], 5000, 1, 0.1, -1); //Play background music
 
 	/*main game loop */
 	while (!done)	//UPDATE FUNCTION
@@ -143,25 +148,24 @@ int level_load(int level) {
 		SDL_PumpEvents();   // update SDL's internal event structures (ACTUAL UPDATING - DO NOT TOUCH)
 		keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
 
-		SDL_PollEvent(&event);
-
 		/*update things here*/
 		SDL_GetMouseState(&mx, &my);
+		SDL_PollEvent(&event);
 
 		//Toggle enemy
-		if (event.type == SDL_KEYUP & SDLK_LEFTBRACKET) {
+		if (event.type == SDL_KEYUP && SDLK_LEFTBRACKET) {
 			debug_id--;
 			if (debug_id < 0)debug_id = 3;
+			mouse = debugSprites[debug_id];
 		}
-		else if (event.type == SDL_KEYUP & SDLK_RIGHTBRACKET) {
+		else if (event.type == SDL_KEYUP && SDLK_RIGHTBRACKET) {
 			debug_id++;
 			if (debug_id > 3)debug_id = 0;
+			mouse = debugSprites[debug_id];
 		}
 
 		//Paint enemies on click
-		if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
-			/*slog("%i", mx);
-			slog("%i", my);*/
+		if ((event.type == SDL_MOUSEBUTTONDOWN) & (SDL_BUTTON(SDL_BUTTON_LEFT))) {
 			if (debug_id == 0)
 				LOL = player_new(vector2d(mx, my), level, save);
 			else if (debug_id == 1)
@@ -171,10 +175,6 @@ int level_load(int level) {
 			else if (debug_id == 3)
 				LOL = enemy_new(13, vector2d(mx, my), level, save);
 		}
-
-
-		mf += 0.01; //Mouse animation rate Adds +0.1 to animation every tic. 10 tics per animation frame
-		if (mf >= 16.0)mf = 0;
 
 		gf2d_graphics_clear_screen();// clears drawing buffers
 		// all drawing should happen betweem clear_screen and next_frame
@@ -191,21 +191,21 @@ int level_load(int level) {
 		//Entities
 		entity_draw_all();
 		if (player)
-			player_update(player, space, save, level);
+			player_update(player, space, level, save, enemy[0], enemy[1], enemy[2]); //Prevents undeclared identifier error;
 		entity_update_all(space, player);
 
 		//Effects
 
 		//Saving
 		if (keys[SDL_SCANCODE_O] && player->health > 0) {
-			save_file(&save, level, player, enemy1, enemy2, enemy3);
+			save_file(&save, level, player, enemy[0], enemy[1], enemy[2]);
 			saveMessage = gf2d_sprite_load_image("images/ui/Saved.png");
 			saveUITimer = 0;
 			saveUIFlag = 1;
 		}
 		//Loading
 		if (keys[SDL_SCANCODE_P]) {
-			load_file(&save, level, player, enemy1, enemy2, enemy3);
+			load_file(&save, level, player, enemy[0], enemy[1], enemy[2]);
 			saveMessage = gf2d_sprite_load_image("images/ui/Loaded.png");
 			saveUITimer = 0;
 			saveUIFlag = 1;
@@ -236,7 +236,7 @@ int level_load(int level) {
 		gf2d_sprite_draw(
 			mouse,
 			vector2d(mx, my),
-			NULL,
+			&mouseScale,
 			NULL,
 			NULL,
 			NULL,
@@ -249,6 +249,8 @@ int level_load(int level) {
 
 			//slog("Rendering at %f FPS", gf2d_graphics_get_frames_per_second()); //Display framerate
 	}
+
+	gf2d_sound_clear_all();
 
 	slog("---==== END ====---");
 	return 0;

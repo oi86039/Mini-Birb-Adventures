@@ -13,6 +13,7 @@
 
 #include "gf2d_sprite.h"
 #include "gf2d_collision.h"
+#include "gf2d_audio.h"
 
 /**Type of projectile the entity is*/
 typedef enum Proj_Type { MELEE, LONG, SPREAD, RAPID, ENEMY_LONG }Proj_Type;
@@ -36,6 +37,8 @@ typedef struct Entity_S
 	Vector2D position;		/**position of entity in scene*/
 	Vector2D velocity;		/**how fast (and what direction) the entity is traveling in*/
 	Vector2D flip;			/**Determines if flipping sprite horizontally/vertically*/
+
+	Sound* sound;			/**Sound for the entity (projectile) to use*/
 
 	//State state;			/**Ability/firing state of player/enemies*/
 	Vector4D colorShift;	/**Change color of entity if specified*/

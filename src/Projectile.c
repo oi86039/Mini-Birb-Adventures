@@ -1,6 +1,7 @@
 #include "Projectile.h"
 #include "simple_logger.h"
 #include "gui.h"
+#include "gf2d_audio.h"
 
 void projectile_update(Entity* self, Space* space);
 
@@ -13,7 +14,7 @@ static int long_count = 0; /*count of long shot projectiles*/
 static int spread_count = 0; /*count of spread shot projectiles*/
 static int rapid_count = 0; /*count of rapid fire projectiles*/
 
-Entity* projectile_new(Proj_Type type, Vector2D velocity, Entity* shooter, Space* space)
+Entity * projectile_new(Proj_Type type, Vector2D velocity, Entity * shooter, Space * space)
 {
 	//Don't spawn if >projectile_count
 	if (projectile_count > 30) return NULL; //Only 10 projectiles allowed
@@ -108,7 +109,7 @@ Entity* projectile_new(Proj_Type type, Vector2D velocity, Entity* shooter, Space
 		projectile_worldTouch);
 
 	gf2d_space_add_body(space, &projectile->body);
-	slog("projectile body Added to space");
+	//slog("projectile body Added to space");
 
 	projectile->projectile_update = projectile_update;//Function pointer!
 
