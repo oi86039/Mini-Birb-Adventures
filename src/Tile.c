@@ -78,6 +78,7 @@ Tile* tile_new() {
 Tile* tile_new_invisible(Vector2D position, Vector2D scale) {
 	Tile* tile = tile_new();
 	if (tile) {
+		tile->sprite = gf2d_sprite_load_image("images/Platform_Debug.jpg");
 		tile->scale = scale;
 		tile->position = position;
 		tile->hitBox = gf2d_shape_rect(position.x, position.y, 1024 * scale.x, 1024 * scale.y);
@@ -218,7 +219,7 @@ void tile_draw(Tile* self)
 		NULL	//ColorShift
 		, 0); //Frame
 	if (!self->sprite)
-		gf2d_shape_draw(self->hitBox, gf2d_color(255, 0, 0, 255)); //FOR DEBUGGING PURPOSES
+		gf2d_shape_draw(self->hitBox, gf2d_color(1, 0, 0, 1)); //FOR DEBUGGING PURPOSES
 }
 
 //Draw all tiles

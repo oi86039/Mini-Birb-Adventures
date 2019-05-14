@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
 	//Load Level 2
 	//level_load(2, (vector2d(70, 515));
 	//Load Level 3
-	level_load(2);
+	level_load(4);
 	//Load Level 4
 	//level_load(4, vector2d(0, 420));
 	//level3();
@@ -33,9 +33,14 @@ int level_load(int level) {
 	int done = 0;
 	const Uint8* keys;
 	SDL_Event event; //SDL Current Keyboard/mouse event (GOD HELP US ALL)
-	Sprite* sprite; //Background pic
-	int saveUIFlag = 0; //Trigger save UI timer
+	char* background[] = {
+		"images/backgrounds/kitchen-clipart-4.jpg",
+		"images/backgrounds/flat-design-interior-dining-room-vector-id643264112.jpg",
+		"images/backgrounds/furniture-clipart-kids-bedroom-7.png",
+		"images/backgrounds/furniture-clipart-closet-3.jpg"
+	}; //Background pic	int saveUIFlag = 0; //Trigger save UI timer
 	float saveUITimer; //Delay in Save UI
+	float saveUIFlag = 0; //Flag to determine saving graphic
 	//Sound shoot;
 
 	Save save;
@@ -90,7 +95,6 @@ int level_load(int level) {
 	SDL_ShowCursor(SDL_DISABLE);
 
 	/*demo setup*/
-	sprite = gf2d_sprite_load_image("images/backgrounds/bg_flat.png"); // background var
 	msgScale = vector2d(0.35, 0.35);
 	//mouse = gf2d_sprite_load_all("images/pointer.png", 32, 32, 16, false); // mouse pointer var
 
@@ -115,7 +119,7 @@ int level_load(int level) {
 	else if (level == 3)
 		player = player_new(vector2d(20, 0), level, save);
 	else if (level == 4)
-		player = player_new(vector2d(0, 420), level, save);
+		player = player_new(vector2d(0, 0), level, save);
 
 	//create tilemap (Put in separate files)
 	load_tilemap(level, tile);
@@ -200,7 +204,7 @@ int level_load(int level) {
 		// all drawing should happen betweem clear_screen and next_frame
 
 		//Backgrounds drawn first
-		gf2d_sprite_draw_image(sprite, vector2d(0, 0));
+		gf2d_sprite_draw_image(gf2d_sprite_load_image(background[level - 1]), vector2d(0, 0));
 		//gf2d_space_draw(space, vector2d(0,0));
 
 		//Tiles
@@ -212,12 +216,12 @@ int level_load(int level) {
 		entity_draw_all();
 		if (player) {
 			//Update main player
-			player_update(player, space, level, save, enemy[0], enemy[1], enemy[2]); //Prevents undeclared identifier error;
+			player_update(event, player, space, level, save, enemy[0], enemy[1], enemy[2]); //Prevents undeclared identifier error;
 			//Update other players
 			for (int i = 3; i < enemyIndex; i++)
 			{
 				if (enemy[i]->hitBox.id == 0)
-					player_update(enemy[i], space, level, save, enemy[0], enemy[1], enemy[2]); //Prevents undeclared identifier error;
+					player_update(event, enemy[i], space, level, save, enemy[0], enemy[1], enemy[2]); //Prevents undeclared identifier error;
 
 			}
 		}

@@ -60,7 +60,7 @@ Entity* projectile_new(Proj_Type type, Vector2D velocity, Entity* shooter, Space
 		projectile->timeLimit = 0.50;
 		spread_count++;
 	}
-	else if (type == RAPID && rapid_count < 10) {
+	else if (type == RAPID && rapid_count < 1) {
 		projectile->spriteSheet = gf2d_sprite_load_image("images/Rapid.png");
 		projectile->colorShift = gf2d_color_to_vector4(gf2d_color(1, 1, 1, 1));
 		projectile->scale = vector2d(.02, .02);
@@ -68,9 +68,8 @@ Entity* projectile_new(Proj_Type type, Vector2D velocity, Entity* shooter, Space
 		projectile->sound = gf2d_sound_load("audio/hit-01.wav", 0.5, 2);
 		projectile->hitBox = gf2d_shape_circle(projectile->position.x, projectile->position.y, 439 * projectile->scale.x);
 		projectile->offset = vector2d(10, 10);
-		projectile->timeLimit = 0.07;
+		projectile->timeLimit = 0.2;
 		rapid_count++;
-		//projectile id
 	}
 	else if (type == ENEMY_LONG) {
 		projectile->spriteSheet = gf2d_sprite_load_image("images/Long.png");
