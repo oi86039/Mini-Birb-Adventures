@@ -150,40 +150,50 @@ int level_load(int level) {
 
 		/*update things here*/
 		SDL_GetMouseState(&mx, &my);
-		SDL_PollEvent(&event);
 
-		//Toggle enemy
-		if (event.type == SDL_KEYUP && SDLK_LEFTBRACKET) {
-			debug_id--;
-			if (debug_id < 0)debug_id = 3;
-			mouse = debugSprites[debug_id];
-		}
-		else if (event.type == SDL_KEYUP && SDLK_RIGHTBRACKET) {
-			debug_id++;
-			if (debug_id > 3)debug_id = 0;
-			mouse = debugSprites[debug_id];
-		}
+		if (SDL_PollEvent(&event) == 1) {
+			//Toggle enemy
+			if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_LEFTBRACKET) {
+				debug_id--;
+				if (debug_id < 0)debug_id = 3;
+				mouse = debugSprites[debug_id];
+			}
+			else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_RIGHTBRACKET) {
+				debug_id++;
+				if (debug_id > 3)debug_id = 0;
+				mouse = debugSprites[debug_id];
+			}
 
-		//Paint enemies on click
-		if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
-			if (debug_id == 0) {
-				enemy[enemyIndex] = player_new(vector2d(mx, my), level, save);
-				enemyIndex++;
+			//Paint enemies on click
+			if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+				if (debug_id == 0 && mf <= 0) {
+					enemy[enemyIndex] = player_new(vector2d(mx, my), level, save);
+					enemyIndex++;
+					mf++;
+				}
+				else if (debug_id == 1 && mf <= 0) {
+					enemy[enemyIndex] = enemy_new(11, vector2d(mx, my), level, save);
+					enemyIndex++;
+					mf++;
+				}
+				else if (debug_id == 2 && mf <= 0)
+				{
+					enemy[enemyIndex] = enemy_new(12, vector2d(mx, my), level, save);
+					enemyIndex++;
+					mf++;
+				}
+				else if (debug_id == 3 && mf <= 0)
+				{
+					enemy[enemyIndex] = enemy_new(13, vector2d(mx, my), level, save);
+					enemyIndex++;
+					mf++;
+				}
 			}
-			else if (debug_id == 1) {
-				enemy[enemyIndex] = enemy_new(11, vector2d(mx, my), level, save);
-				enemyIndex++;
-			}
-			else if (debug_id == 2)
-			{
-				enemy[enemyIndex] = enemy_new(12, vector2d(mx, my), level, save);
-				enemyIndex++;
-			}
-			else if (debug_id == 3)
-			{
-				enemy[enemyIndex] = enemy_new(13, vector2d(mx, my), level, save);
-				enemyIndex++;
-			}
+		}
+		if (mf >= 1) { //Paint Speed limiter
+			mf += 0.01;
+			if (mf > 1.2)
+				mf = 0;
 		}
 
 		gf2d_graphics_clear_screen();// clears drawing buffers
@@ -200,8 +210,17 @@ int level_load(int level) {
 
 		//Entities
 		entity_draw_all();
-		if (player)
+		if (player) {
+			//Update main player
 			player_update(player, space, level, save, enemy[0], enemy[1], enemy[2]); //Prevents undeclared identifier error;
+			//Update other players
+			for (int i = 3; i < enemyIndex; i++)
+			{
+				if (enemy[i]->hitBox.id == 0)
+					player_update(enemy[i], space, level, save, enemy[0], enemy[1], enemy[2]); //Prevents undeclared identifier error;
+
+			}
+		}
 		entity_update_all(space, player);
 
 		//Effects
@@ -254,7 +273,7 @@ int level_load(int level) {
 			NULL,
 			NULL,
 			&mouseColor,
-			(int)mf);
+			0);
 
 		gf2d_grahics_next_frame();// render current draw frame and skip to the next frame
 
