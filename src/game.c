@@ -71,10 +71,10 @@ int level_load(int level) {
 	gf2d_sprite_init(2048);
 
 	Sound* music[] = {
-		gf2d_sound_load("audio/bensound-theelevatorbossanova.wav", 1, 1),
-		gf2d_sound_load("audio/heliumplains_cut.wav", 1, 1),
-		gf2d_sound_load("audio/Frozen In Time (Chiptune).wav", 1, 1),
-		gf2d_sound_load("audio/FinalBoss.wav", 1, 1),
+		gf2d_sound_load("audio/bensound-theelevatorbossanova.wav", 0.5, 1),
+		gf2d_sound_load("audio/heliumplains_cut.wav", 0.5, 1),
+		gf2d_sound_load("audio/Frozen In Time (Chiptune).wav", 0.5, 1),
+		gf2d_sound_load("audio/FinalBoss.wav", 0.5, 1),
 	};
 
 	//Initialize entity manager

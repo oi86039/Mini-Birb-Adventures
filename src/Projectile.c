@@ -14,7 +14,7 @@ static int long_count = 0; /*count of long shot projectiles*/
 static int spread_count = 0; /*count of spread shot projectiles*/
 static int rapid_count = 0; /*count of rapid fire projectiles*/
 
-Entity * projectile_new(Proj_Type type, Vector2D velocity, Entity * shooter, Space * space)
+Entity* projectile_new(Proj_Type type, Vector2D velocity, Entity* shooter, Space* space)
 {
 	//Don't spawn if >projectile_count
 	if (projectile_count > 30) return NULL; //Only 10 projectiles allowed
@@ -32,6 +32,7 @@ Entity * projectile_new(Proj_Type type, Vector2D velocity, Entity * shooter, Spa
 		projectile->colorShift = gf2d_color_to_vector4(gf2d_color(1, 1, 1, 1));
 		projectile->scale = vector2d(.03, .03);
 		projectile->velocity = velocity;
+		projectile->sound = gf2d_sound_load("audio/hit-01.wav", 0.5, 2);
 		projectile->hitBox = gf2d_shape_circle(projectile->position.x, projectile->position.y, 500 * projectile->scale.x);
 		projectile->offset = vector2d(10, 10);
 		projectile->timeLimit = 0.15;
@@ -42,6 +43,7 @@ Entity * projectile_new(Proj_Type type, Vector2D velocity, Entity * shooter, Spa
 		projectile->colorShift = gf2d_color_to_vector4(gf2d_color(1, 1, 1, 1));
 		projectile->scale = vector2d(.05, .05);
 		projectile->velocity = velocity;
+		projectile->sound = gf2d_sound_load("audio/shoot-02.wav", 0.5, 2);
 		projectile->hitBox = gf2d_shape_circle(projectile->position.x, projectile->position.y, 212 * projectile->scale.x);
 		projectile->offset = vector2d(10, 10);
 		projectile->timeLimit = 1;
@@ -52,6 +54,7 @@ Entity * projectile_new(Proj_Type type, Vector2D velocity, Entity * shooter, Spa
 		projectile->colorShift = gf2d_color_to_vector4(gf2d_color(1, 1, 1, 1));
 		projectile->scale = vector2d(.02, .02);
 		projectile->velocity = velocity;
+		projectile->sound = gf2d_sound_load("audio/shoot-01.wav", 0.5, 2);
 		projectile->hitBox = gf2d_shape_circle(projectile->position.x, projectile->position.y, 238 * projectile->scale.x);
 		projectile->offset = vector2d(5, 5);
 		projectile->timeLimit = 0.50;
@@ -62,6 +65,7 @@ Entity * projectile_new(Proj_Type type, Vector2D velocity, Entity * shooter, Spa
 		projectile->colorShift = gf2d_color_to_vector4(gf2d_color(1, 1, 1, 1));
 		projectile->scale = vector2d(.02, .02);
 		projectile->velocity = velocity;
+		projectile->sound = gf2d_sound_load("audio/hit-01.wav", 0.5, 2);
 		projectile->hitBox = gf2d_shape_circle(projectile->position.x, projectile->position.y, 439 * projectile->scale.x);
 		projectile->offset = vector2d(10, 10);
 		projectile->timeLimit = 0.07;
@@ -73,12 +77,14 @@ Entity * projectile_new(Proj_Type type, Vector2D velocity, Entity * shooter, Spa
 		projectile->colorShift = gf2d_color_to_vector4(gf2d_color(1, 0.5, 0.5, 1));
 		projectile->scale = vector2d(.05, .05);
 		projectile->velocity = velocity;
+		projectile->sound = gf2d_sound_load("audio/hit-01.wav", 0.5, 2);
 		projectile->hitBox = gf2d_shape_circle(projectile->position.x, projectile->position.y, 212 * projectile->scale.x);
 		projectile->offset = vector2d(10, 10);
 		projectile->timeLimit = 1;
 		//long_count++;
 	}
 	else {
+		gf2d_sound_free(projectile->sound); //Free sound memory
 		entity_free(projectile);
 		return NULL;
 	}
@@ -112,6 +118,8 @@ Entity * projectile_new(Proj_Type type, Vector2D velocity, Entity * shooter, Spa
 	//slog("projectile body Added to space");
 
 	projectile->projectile_update = projectile_update;//Function pointer!
+
+	gf2d_sound_play(projectile->sound, 0, 0.5, 2, 2);//Play sound ounce
 
 	return projectile;
 }
@@ -164,6 +172,7 @@ int projectile_worldTouch(struct Body_S* self, Collision * collision) {
 void projectile_free(Space * space, Entity * self) {
 	projectile_count--;
 	gf2d_space_remove_body(space, &self->body);
+	gf2d_sound_free(self->sound); //Free sound memory
 	//gui_set_energy(1);
 	entity_free(self);
 }
